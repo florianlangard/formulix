@@ -8,7 +8,6 @@
     margin-right: 5px;
     color: white;
     font-size: 1.2em;
-    
     &-submit {
         font-weight: bold;
         background-color: rgb(0, 120, 0);
@@ -25,6 +24,18 @@
 
     &-disabled {
         background-color: rgba(vars.$darkGrey, 0.4);
+    }
+
+    &-twitch {
+        font-weight: bold;
+        background-color: blueviolet;
+    }
+
+    &-twitch:hover {
+        border: none;
+        transition: .5s;
+        transform : scale(1.05);
+        
     }
 }
 

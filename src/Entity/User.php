@@ -39,7 +39,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @Assert\NotBlank
     //  * @Assert\Length(min = 8)
      */
@@ -60,6 +60,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity=Score::class, mappedBy="user", orphanRemoval=true)
      */
     private $scores;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $twitchId;
 
     public function __construct()
     {
@@ -125,7 +130,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -225,6 +230,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $score->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTwitchId(): ?string
+    {
+        return $this->twitchId;
+    }
+
+    public function setTwitchId(?string $twitchId): self
+    {
+        $this->twitchId = $twitchId;
 
         return $this;
     }
