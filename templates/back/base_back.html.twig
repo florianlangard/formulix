@@ -1,0 +1,33 @@
+{% extends "base.html.twig" %}
+
+{% block active_dashboard %}{% endblock %}
+{% block active_backoffice %}active{% endblock %}
+{% block title %}Backoffice - Formulix{% endblock %}
+
+{% block header %}{% endblock %}
+{% block subnav %}
+
+    <nav class="subnav">
+        <ul>
+            <li>
+                <a href="{{path('back_user_index')}}" class="nav-link {% block active_users %}active{% endblock %}">Utilisateurs</a>
+            </li>
+            <li>
+                <a href="{{path('back_driver_index')}}" class="nav-link {% block active_drivers %}{% endblock %}">Pilotes</a>
+            </li>
+            <li>
+                <a href="{{path('back_event_index')}}" class="nav-link {% block active_events %}{% endblock %}">Courses</a>
+            </li>
+            <li>
+                <a href="{{path('back_result_index')}}" class="nav-link {% block active_results %}{% endblock %}">Résultats</a>
+            </li>
+            <li>
+                <a href="#" class="nav-link">Pronos</a>
+            </li>
+            <li>
+                <a href="{{path('back_utility')}}" class="nav-link {% block active_utility %}{% endblock %}">Infos et Outils</a>
+            </li>
+        </ul>
+    </nav>
+
+{% endblock %}

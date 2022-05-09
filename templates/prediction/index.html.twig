@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formulix - Placer une pronostic{% endblock %}
+{% block header %}
+	<header class="header">
+	<div class="header-container">
+		<h1 class="main-title">Pronostics</h1>
+		<p>Placer un pronostic sur : {{ event.name }}</p>
+        <p>Trouvez le pilote qui signera la pole dans la liste déroulante et complétez le temps qu'il réalisera dans le formulaire.</p>
+	</div>
+	</header>
+{% endblock %}
+{% block body %}
+<div class="body-container">
+<div class="card event event-container">
+<div class="card event event-next">
+						<div class="info-container">
+							<div class="card-header">
+								<div class="flag">
+									<span class="fi fi-{{ event.countryCode }}"></span>
+								</div>
+								<div class="title">
+									<h3>{{ event.country }}</h3>
+									<h3>{{ event.name }}</h3>
+								</div>
+							</div>
+							<p>Manche n°
+								{{ event.round }}</p>
+							<p>Qualification :
+								{{ event.qualifyingDate|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY") }}
+								à 
+								{{ event.qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
+								({{ event.qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC)
+							</p>
+							<p>Course:
+								{{ event.date|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY") }}
+								à
+								{{ event.date|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
+								({{ event.date|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC)
+								</p>
+							
+						</div>
+						
+					</div>
+
+<div class="prediction-form">
+
+{% include "/prediction/_form_add.html.twig" %}
+
+</div>
+
+
+</div>
+</div>
+{% endblock %}

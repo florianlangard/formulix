@@ -1,0 +1,95 @@
+@use './vars';
+
+.podium-container {
+    background-color: vars.$lightGrey;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    margin: 10px;
+    
+    border-radius: 10px;
+    
+    & h3 {
+        text-align: center;
+    }
+}
+
+.podium {
+    display: flex;
+    flex-direction: row;
+    height: 200px;
+    width: 100%;
+    margin: 10px;
+    border-radius: 10px;
+    align-items: flex-end;
+    justify-content: center;
+    
+}
+
+#podium {
+    transform: scale(130%);
+}
+
+.podium-box {
+    height: 120px;
+    background-color: vars.$darkGrey;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    &.podium-second {
+        height: 80px;
+    }
+
+    &.podium-third {
+        height: 60px;
+    }
+}
+
+.podium-item {
+    width: 30%;
+}
+
+.podium-user {
+    text-align: center;
+}
+
+// .podium-user-container {
+//     height: 50px;
+//     width: 100%;
+// }
+
+.position {
+    text-align: center;
+    font-weight: bold;
+    color: white;
+
+    &.position-first {
+        font-size: 2em;
+    }
+
+    &.position-second {
+        font-size: 1.6em;
+    }
+
+    &.position-third {
+        font-size: 1.2em;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .podium-container {
+        width: 100%;
+        margin: auto;
+    }
+
+    .podium {
+        justify-content: center;
+        margin: auto;
+    }
+
+    #podium {
+        transform: scale(1);
+    }
+}

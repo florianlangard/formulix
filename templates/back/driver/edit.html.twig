@@ -1,0 +1,14 @@
+{% extends 'back/base_back.html.twig' %}
+
+
+{% block active_users %}{% endblock %}
+{% block active_drivers %}active{% endblock %}
+{% block body %}
+    <h1>Edit Driver</h1>
+
+    {{ include('back/driver/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('back_driver_index') }}">back to list</a>
+
+    {{ include('back/driver/_delete_form.html.twig') }}
+{% endblock %}

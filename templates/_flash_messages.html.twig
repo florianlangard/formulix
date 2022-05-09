@@ -1,0 +1,15 @@
+{# {% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ label }}">
+            <div class="flash-message">{{ message }}</div>
+        </div>
+    {% endfor %}
+{% endfor %} #}
+
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="notyf-message {{ label }}">
+            <div class="flash-message">{{ message }}</div>
+        </div>
+    {% endfor %}
+{% endfor %}

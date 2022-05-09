@@ -1,0 +1,92 @@
+@use './vars';
+
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    height: 80px;
+    background-color: vars.$darkGrey;
+    border-bottom: 4px solid vars.$altDarkGrey;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    & li.nav-link {
+        display: flex;
+        align-items: center;
+        font-size: 1.1em;
+        & a {
+            display: flex;
+            align-items: center;
+        }
+        & .svg-icon {
+            margin-right: 5px;
+        }
+    }
+}
+
+.subnav ul{
+    display: flex;
+    flex-direction: row;
+    background-color: vars.$lightGrey;
+    border-bottom: 2px solid vars.$darkGrey;
+    display: flex;
+    margin-top: 80px;
+    height: 50px;
+    align-items: center;
+    & li > a {
+        color: black;
+
+        &.active {
+            border-bottom: 2px solid vars.$darkGrey;
+        }
+    }
+}
+
+.navblock {
+    display: flex;
+    justify-content: space-around;
+}
+
+.nav-auth {
+    padding-right: 20px;
+}
+
+.nav-icon {
+    height: 24px;
+    width: 24px;
+    fill: white;
+}
+
+.active {
+    border-bottom: 2px solid white;
+    margin-top: 2px;
+}
+
+@media screen and (max-width: 600px){
+    .hidden-nav {
+        display: none;
+    }
+
+    ul.navbar-nav {
+        padding-left: 5px;
+    }
+
+    .navbar {
+        & li.nav-link {
+            display: flex;
+            align-items: center;
+            font-size: 1.1em;
+            & .svg-icon {
+                margin-right: 0;
+            }
+        }
+    }
+
+    .nav-icon {
+        height: 40px;
+        width: 40px;
+    }
+}

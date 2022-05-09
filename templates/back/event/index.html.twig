@@ -1,0 +1,51 @@
+{% extends 'back/base_back.html.twig' %}
+{% block active_users %}{% endblock %}
+{% block active_events %}active{% endblock %}
+
+{% block body %}
+    <h1>Event index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Qualifying Date</th>
+                <th>Round</th>
+                <th>Season</th>
+                <th>Circuit_name</th>
+                <th>Locality</th>
+                <th>Code</th>
+                <th>Country</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event in events %}
+            <tr>
+                <td>{{ event.id }}</td>
+                <td>{{ event.name }}</td>
+                <td>{{ event.date ? event.date|date('d-m-Y H:i:s') : '' }}</td>
+                <td>{{ event.qualifyingDate ? event.qualifyingDate|date('d-m-Y H:i:s') : '' }}</td>
+                <td>{{ event.round }}</td>
+                <td>{{ event.season }}</td>
+                <td>{{ event.circuitName }}</td>
+                <td>{{ event.locality }}</td>
+                <td>{{ event.countryCode }}</td>
+                <td>{{ event.country }}</td>
+                <td>
+                    <a href="{{ path('back_event_show', {'id': event.id}) }}">show</a>
+                    <a href="{{ path('back_event_edit', {'id': event.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('back_event_new') }}">Create new</a>
+{% endblock %}

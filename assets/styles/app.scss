@@ -1,0 +1,8 @@
+@use './vars';
+
+body {
+    background-color: vars.$altDarkGrey;
+    font-family: 'Roboto', sans-serif;
+    height: 100vh;
+    margin: auto;
+}

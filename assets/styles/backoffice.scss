@@ -1,0 +1,16 @@
+@use './vars';
+
+.back-container {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+    // background-color: vars.$darkGrey;
+    color: whitesmoke;
+    & tr, td {
+        margin-right: 10px;
+    }
+
+    .table {
+        margin: auto;
+    }
+}

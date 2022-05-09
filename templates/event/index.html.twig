@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formulix - Calendrier
+{% endblock %}
+
+{% block active_dashboard %}{% endblock %}
+{% block active_calendar %}active
+{% endblock %}
+
+{% block header %}
+	<header class="header">
+		<div class="header-container">
+			<h1 class="main-title">Calendrier de la saison 2022</h1>
+			<p>Retrouvez ici toutes les courses de la saison.</p>
+			<p id="current-date">
+				{{date|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY")}}
+			</p>
+		</div>
+	</header>
+{% endblock %}
+{% block body %}
+
+	<div class="body-container">
+		{% include "_flash_messages.html.twig" %}
+
+		<div class="events">
+
+			{% for event in events %}
+
+				<div class="card event">
+					<div class="info-container">
+						<div class="card-header">
+							<div class="flag">
+								<span class="fi fi-{{ event.countryCode }}"></span>
+							</div>
+							<div class="title">
+								<h3>{{ event.country }}</h3>
+								<h3>{{ event.name }}</h3>
+							</div>
+						</div>
+						<p>Manche n°
+							{{ event.round }}</p>
+						<p>Qualifications :</p>
+						<p>
+							{{ event.qualifyingDate|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
+							à 
+							{{ event.qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)</br>
+							( {{ event.qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC )
+							</p>
+						<p>Course:</p>
+						<p>
+							{{ event.date|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
+							à 
+							{{ event.date|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)</br>
+							( {{ event.date|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC )
+						</p>
+
+					</div>
+					<div class="button-container">
+						{% if event.qualifyingDate < date %}
+							<button disabled class="btn btn-disabled">Terminé</button>
+						{% else %}
+							<a href="{{path('prediction_add', {slug: event.slug})}}">
+								<button class="btn btn-submit">Qualifs</button>
+							</a>
+						{% endif %}
+						{% if event.date < date %}
+							<button disabled class="btn btn-disabled">Terminé</button>
+						{% else %}
+							<a href="{{path('prediction_add', {slug: event.slug})}}">
+								<button disabled class="btn btn-disabled">Course</button>
+							</a>
+						{% endif %}
+					</div>
+				</div>
+
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

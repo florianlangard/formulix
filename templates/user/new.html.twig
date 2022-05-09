@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un compte - Formulix{% endblock %}
+{% block navbar %}{% endblock %}
+{% block header %}{% endblock %}
+{% block body %}
+<div class="login-form-container">
+
+    
+    <h1>Créer un compte</h1>
+
+    {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+
+    {# {{ form_widget(form) }}
+    <button class="btn btn-submit">{{ button_label|default('Enregistrer') }}</button>
+    {{ form_end(form) }} #}
+    <div class="form-element">
+        <div class="">
+        {{ form_label(form.email) }}
+        </div>
+        <div class="">
+        {{ form_widget(form.email) }}
+        </div>
+    </div>
+    <div class="form-element">
+        <div class="">
+        {{ form_label(form.personaname) }}
+        </div>
+        <div class="">
+        {{ form_widget(form.personaname) }}
+        </div>
+    </div>
+    <div class="form-element">
+        <div class="">
+        {{ form_label(form.password.first) }}
+        </div>
+        <div class="">
+        {{ form_widget(form.password.first) }}
+        {{ form_help(form.password.first) }}
+        </div>
+    </div>
+    <div class="form-element">
+        <div class="">
+        {{ form_label(form.password.second) }}
+        </div>
+        <div class="">
+        {{ form_widget(form.password.second) }}
+        </div>
+    </div>
+    {{ form_rest(form) }}
+    <button class="btn btn-submit">{{ button_label|default('Enregistrer') }}</button>
+    {{ form_end(form) }}
+
+    <p>Déjà inscrit? <a href="{{ path('app_login') }}">Se connecter</a></p>
+</div>
+{% endblock %}

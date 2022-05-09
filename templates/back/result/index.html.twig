@@ -1,0 +1,40 @@
+{% extends 'back/base_back.html.twig' %}
+{% block active_users %}{% endblock %}
+{% block active_results %}active{% endblock %}
+
+
+{% block body %}
+    <h1>Result index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Event</th>
+                <th>Name</th>
+                <th>Time</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for result in results %}
+            <tr>
+                <td>{{ result.id }}</td>
+                <td>{{ result.event.name }}</td>
+                <td>{{ result.pole.fullname }}</td>
+                <td>{{ result.time }}</td>
+                <td>
+                    <a href="{{ path('back_result_show', {'id': result.id}) }}">show</a>
+                    <a href="{{ path('back_result_edit', {'id': result.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('back_result_new') }}">Create new</a>
+{% endblock %}

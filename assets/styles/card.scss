@@ -1,0 +1,99 @@
+@use './vars';
+
+.card {
+    background-color: vars.$lightGrey;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    border: 1px solid grey;
+    box-shadow: 0 0 5px black;
+    min-width: 300px;
+
+    &.event {
+        &.event-next {
+            flex-grow: 1;
+        }
+    }
+
+    &.card-user {
+        flex-direction: column;
+    }
+
+}
+
+// === Last Event card with results an podium
+.card-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.card-title {
+    margin-top: 0;
+    margin-left: 0;
+}
+
+// Flag icon
+span.fi {
+    width: 64px;
+    height: 64px;
+}
+
+
+.flag, .title {
+    display: inline-block;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.card-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: linear-gradient(145deg,
+        vars.$altDarkGrey,
+        vars.$altDarkGrey 90%,
+        vars.$lightGrey 90%,
+        vars.$standardRed 92%,
+    );
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+}
+
+.event-name {
+    display: flex;
+    align-items: center;
+}
+
+.card.event.event-container {
+    background-color: vars.$darkGrey;
+}
+
+@media screen and (max-width: 600px) {
+
+    .card {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card.event.event-container, .card-user{
+        width: auto;
+        margin: auto;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        align-items: stretch;
+    }
+
+    .card.event.event-next, .card.event.event-last {
+        max-width: 95%;
+        margin: auto;
+        margin-bottom: 5px;
+    }
+
+    .card-content {
+        display: flex;
+        flex-direction: column;
+    }
+}

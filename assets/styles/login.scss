@@ -1,0 +1,112 @@
+@use './vars';
+
+.login-form-container {
+    background-color: lightgray;
+    background: linear-gradient(vars.$lightGrey 90%, vars.$standardRed 90%);
+    width: 520px;
+    min-height: 620px;
+    height: auto;
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 70px;
+    text-align: center;
+    color: black;
+    padding-top: 120px;
+    box-shadow: 10px 10px 5px 1px rgba($color: #000000, $alpha: 0.65);
+    
+    &:before {
+        position: absolute;
+        left: calc(50% - 45px);
+        top: -20px;
+        display: block;
+        content: '';
+        width: 90px;
+        height: 150px;
+        background-color: vars.$darkGrey;
+        z-index: 999;
+        box-shadow: 10px 10px 5px 1px rgba($color: #000000, $alpha: 0.65);
+        // margin: auto;
+    }
+
+    &:after {
+        position: absolute;
+        top: 120px;
+        left: calc(50% - 60px);
+        display: block;
+        content: '';
+        width: 120px;
+        height: 26px;
+        border-radius: 50px;
+        background-color: vars.$altDarkGrey;
+        z-index: 998;
+    }
+}
+
+.form {
+
+    &-title {
+        text-transform: uppercase;
+        font-size: 1.4em;
+    }
+}
+
+input {
+    width: 250px;
+    margin: auto;
+    margin-bottom: 1.5em;
+    border: none;
+    height: 30px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    text-align: left;
+    padding: 0 10px;
+
+    &:focus {
+        outline: none;
+    }
+
+}
+
+.label {
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
+
+.user-img {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+}
+
+// .fa-user-circle {
+//     color: black;
+// }
+
+.logged-in {
+    margin-bottom: 1em;
+}
+
+.login-logo {
+    transform: scale(40%);
+    // margin: 0 auto;
+}
+
+#landing-main-title {
+    margin-top: 0;
+    margin-bottom: 2px;
+}
+
+@media screen and (max-width: 600px) {
+    .form-container {
+        margin: auto;
+        margin-top: 50px;
+        height: 100%;
+        width: 90%;
+    }
+
+    .login-form-container {
+        width: 95%;
+    }
+}

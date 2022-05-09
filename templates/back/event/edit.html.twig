@@ -1,0 +1,13 @@
+{% extends 'back/base_back.html.twig' %}
+{% block active_users %}{% endblock %}
+{% block active_events %}active{% endblock %}
+
+{% block body %}
+    <h1>Edit Event</h1>
+
+    {{ include('back/event/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('back_event_index') }}">back to list</a>
+
+    {{ include('back/event/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'back/base_back.html.twig' %}
+
+{% block active_users %}{% endblock %}
+{% block active_drivers %}active{% endblock %}
+
+
+
+{% block body %}
+    <h1>Driver index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fullname</th>
+                <th>Number</th>
+                <th>Driver_id</th>
+                <th>Code</th>
+                <th>IsActive</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for driver in drivers %}
+            <tr>
+                <td>{{ driver.id }}</td>
+                <td>{{ driver.fullname }}</td>
+                <td>{{ driver.number }}</td>
+                <td>{{ driver.driverId }}</td>
+                <td>{{ driver.code }}</td>
+                <td>{{ driver.isActive ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('back_driver_show', {'id': driver.id}) }}">show</a>
+                    <a href="{{ path('back_driver_edit', {'id': driver.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('back_driver_new') }}">Create new</a>
+{% endblock %}

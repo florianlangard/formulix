@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Bienvenue - Formulix{% endblock %}
+
+{% block navbar %}{% endblock %}
+{% block header %}{% endblock %}
+
+{% block body %}
+
+<div class="login-form-container">
+    <div class="user-img">
+        <img class="login-logo" src="{{ asset('assets/logo.svg')}}" alt="logo"/>
+    </div>
+
+    <h1 id="landing-main-title">Bienvenue chez <span>Formulix!</span></h1>
+    <p>Ce site est une démo développée dans un but purement pédagogique et a pour objectif de fournir 
+    un outil communautaire de pronostics sur la saison de F1 en cours (uniquement sur les qualifications, pour le moment).</p>
+    <p>Il est toujours en développement et est donc toujours sujet à des bugs, des soucis d'affichage, de compatibilité, d'équilibrage et autres joyeusetés.
+    Cependant, il reste accessible pendant cette phase et il vous est possible de le tester 
+    si vous le souhaitez en <a href="{{path('user_new')}}"> créant un compte.</a></p>
+    <p>Une simple adresse mail valide vous sera demandée pour vous connecter, et aucun autre usage ou collecte de données personnelles ne sera fait.</p>
+
+
+    <div>
+        <p>Si vous êtes déjà inscrit :</p>
+        <a href="{{path('app_login')}}"><button class="btn btn-submit">Se connecter</button></a>
+    </div>
+</div>
+
+
+{% endblock %}

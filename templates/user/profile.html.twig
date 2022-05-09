@@ -1,0 +1,71 @@
+{% extends "base.html.twig" %}
+
+
+{% block active_dashboard %}{% endblock %}
+{% block active_profile %}active{% endblock %}
+{% block title %}Modifier mon profil - Formulix{% endblock %}
+
+{% block header %}
+	<header class="header">
+	<div class="header-container">
+		<h1 class="main-title">Editer mon profil</h1>
+	</div>
+	</header>
+{% endblock %}
+
+{% block body %}
+{% block form %}
+<div class="body-container">
+    <div class="form-container">
+        <div class="card edit-form">
+
+                {# {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+                {{ form_widget(form) }}
+                    <button class="btn">{{ button_label|default('Enregistrer') }}</button>
+                {{ form_end(form) }} #}
+                {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+
+            {# {{ form_widget(form) }}
+            <button class="btn btn-submit">{{ button_label|default('Enregistrer') }}</button>
+            {{ form_end(form) }} #}
+            <div class="form-element">
+                <div class="">
+                {{ form_label(form.email) }}
+                </div>
+                <div class="">
+                {{ form_widget(form.email) }}
+                </div>
+            </div>
+            <div class="form-element">
+                <div class="">
+                {{ form_label(form.personaname) }}
+                </div>
+                <div class="">
+                {{ form_widget(form.personaname) }}
+                </div>
+            </div>
+            <div class="form-element">
+                <div class="">
+                {{ form_label(form.password.first) }}
+                </div>
+                <div class="">
+                {{ form_help(form.password.first) }}
+                {{ form_widget(form.password.first) }}
+                </div>
+            </div>
+            <div class="form-element">
+                <div class="">
+                {{ form_label(form.password.second) }}
+                </div>
+                <div class="">
+                {{ form_widget(form.password.second) }}
+                </div>
+            </div>
+            {{ form_rest(form) }}
+            <button class="btn btn-submit">{{ button_label|default('Enregistrer') }}</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% endblock %}
