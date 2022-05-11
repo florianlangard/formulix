@@ -94,9 +94,11 @@ input {
 }
 
 .icon.twitch-icon {
-    height: 40px;
-    width: 40px;
-    fill: white;
+    // display: inline-block;
+    height: 32px;
+    width: 32px;
+    padding-left: 4px;
+    vertical-align: middle;
 }
 
 #landing-main-title {

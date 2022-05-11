@@ -42,8 +42,8 @@
 					<p>
 						<a href="{{path('app_login')}}">Connectez-vous
 						</a>pour placer vos pronostics et avoir ici un résumé de vos performances.</p>
-					<p>Pas encore inscrit?
-						<a href="{{path('user_new')}}">Créer un compte</a>
+					<p>Pas encore inscrit et pas de compte Twitch?
+						<a href="{{path('user_new')}}">Créer un compte.</a>
 					</p>
 				</div>
 			{% endif %}
@@ -58,19 +58,19 @@
 						<div class="info-container">
 							<h3>Prochaine course :</h3>
 							<div class="card-header">
-								<div class="flag">
-									<span class="fi fi-{{ nextEvent[0].countryCode }}"></span>
-								</div>
-								<div class="title">
-									<h3>{{ nextEvent[0].country }}</h3>
-									<h3>{{ nextEvent[0].name }}</h3>
-								</div>
-								<div class="round">
-									<p>Manche n°
-										{{ nextEvent[0].round }}
-									</p>
-								</div>
+								{# <div class="main"> #}
+									<div class="flag">
+										<span class="fi fi-{{ nextEvent[0].countryCode }}"></span>
+									</div>
+									<div class="title">
+										<h3>{{ nextEvent[0].country }}</h3>
+										<h3>{{ nextEvent[0].name }}</h3>
+									</div>
+								{# </div> #}
 							</div>
+							<p>Manche n°
+								{{ nextEvent[0].round }} - {{ nextEvent[0].locality }}
+							</p>
 							<p>Qualification :
 								{{ nextEvent[0].qualifyingDate|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
 								à 
@@ -114,7 +114,7 @@
 									</div>
 								</div>
 								<p>Manche n°
-									{{ nextEvent[1].round }}</p>
+									{{ nextEvent[1].round }} - {{ nextEvent[1].locality }}</p>
 								<p>Qualification :
 									{{ nextEvent[1].qualifyingDate|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
 									à 
@@ -170,7 +170,7 @@
 								</div>
 							</div>
 							<p>Manche n°
-								{{ lastEvent[0].round }}</p>
+								{{ lastEvent[0].round }} - {{ lastEvent[0].locality }}</p>
 							{# <p>{{ lastEvent[0].date|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY") }}
 								à
 								{{ lastEvent[0].date|date('H:i') }}
