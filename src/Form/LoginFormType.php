@@ -19,12 +19,42 @@ class LoginFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class, [
-                'label' => 'adresse email'
-            ])
-            ->add('personaname', TextType::class, [
-                'label' => 'Votre pseudo'
-            ])
+            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+                $form = $event->getForm();
+                $user = $event->getData();
+                if ($user->getTwitchId() === null) {
+                    $form->add('email', EmailType::class, [
+                        'label' => 'adresse email'
+                    ])
+                    ->add('personaname', TextType::class, [
+                        'label' => 'Votre pseudo'
+                    ]);
+                }
+                else
+                {
+                    $form->add('email', EmailType::class, [
+                        'label' => 'adresse email',
+                        'disabled' => true,
+                        'attr' => [
+                            'readonly' => true,
+                        ]
+                    ])
+                    ->add('personaname', TextType::class, [
+                        'label' => 'Votre pseudo',
+                        'disabled' => true,
+                        'attr' => [
+                            'readonly' => true,
+                        ]
+                    ]);
+                }
+                
+            })
+            // ->add('email', EmailType::class, [
+            //     'label' => 'adresse email'
+            // ])
+            // ->add('personaname', TextType::class, [
+            //     'label' => 'Votre pseudo'
+            // ])
             ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
                 $form = $event->getForm();
                 $user = $event->getData();

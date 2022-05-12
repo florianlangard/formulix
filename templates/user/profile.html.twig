@@ -28,6 +28,7 @@
             {# {{ form_widget(form) }}
             <button class="btn btn-submit">{{ button_label|default('Enregistrer') }}</button>
             {{ form_end(form) }} #}
+            {% if app.user.twitchId is defined or app.user.twitchId is not null %}
             <div class="form-element">
                 <div class="">
                 {{ form_label(form.email) }}
@@ -44,6 +45,7 @@
                 {{ form_widget(form.personaname) }}
                 </div>
             </div>
+            {% endif %}
             <div class="form-element">
                 <div class="">
                 {{ form_label(form.password.first) }}

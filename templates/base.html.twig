@@ -57,7 +57,7 @@
                                 </div>
                             </a>
                         </li>
-                        {% if app.user.twitchId is empty %}
+                        {# {% if app.user.twitchId is not defined or app.user.twitchId is null %} #}
                         <li class="nav-link">
                             <a href="{{ path('user_profile') }}" class="navbar-link {% block active_profile %}{% endblock %}">
                                 <div class="svg-icon">
@@ -68,7 +68,7 @@
                                 </div>
                             </a>
                         </li>
-                        {% endif %}
+                        {# {% endif %} #}
                         {% if is_granted('ROLE_ADMIN') %}
                         <li class="nav-link">
                             <a href="{{ path('back_user_index') }}" class="navbar-link {% block active_backoffice %}{% endblock %}">
