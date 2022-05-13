@@ -16,7 +16,7 @@ class EventControllerTest extends WebTestCase {
     public function testH1EventsPage() {
         $client = static::createClient();
         $client->request('GET', '/events');
-        $this->assertSelectorTextContains('h1', 'Calendrier de la saison 2022');
+        $this->assertSelectorTextContains('h1', 'Calendrier 2022');
     }
 
     public function testEventsInEventsPage() {

@@ -8,9 +8,17 @@ use App\Entity\Driver;
 use DateTime;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class AppFixtures extends Fixture
 {
+    private $slugger;
+
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
+
     public function load(ObjectManager $manager): void
     {
         // $product = new Product();
@@ -58,6 +66,7 @@ class AppFixtures extends Fixture
                 $event->setCircuitName('circuitName '.$i);
                 $event->setLocality('locality '.$i);
                 $event->setCountry('country '.$i);
+                $event->setSlug($this->slugger->slug($event->getName()));
     
                 $manager->persist($event);
         }
