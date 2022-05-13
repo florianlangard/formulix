@@ -19,6 +19,16 @@ class FormatConverter
         return $convertedTime;
     }
 
+    public function unformatTimeString(string $timeString) : array
+    {
+        $min = explode(':', $timeString);
+        $minute = $min[0];
+        $sec = explode('.', $min[1]);
+        $seconds = $sec[0];
+        $milliseconds = $sec[1];
+        return [$minute, $seconds, $milliseconds];
+    }
+
     public function convertToMs(int $min, int $sec, int $msec) : int
     {
         $convertedTime = ($min * 60000) + ($sec * 1000) + $msec;

@@ -47,7 +47,6 @@ class UserController extends AbstractController
      */
     public function profile(
         Request $request,
-        PredictionRepository $predictionRepository,
         UserPasswordHasherInterface $userPasswordHasher,
         UserRepository $userRepository,
         ManagerRegistry $doctrine)
@@ -81,10 +80,7 @@ class UserController extends AbstractController
                     // return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
                 }
             
-
-            $myPredictions = $predictionRepository->findBy(['user' => $user->getId()], ['created_at' => 'DESC', 'updated_at' => 'DESC']);
-            dump($myPredictions);
-            return $this->renderForm('user/profile.html.twig', ['myPredictions' => $myPredictions, 'user' => $user, 'form' => $form]);
+            return $this->renderForm('user/profile.html.twig', ['user' => $user, 'form' => $form]);
         }
 
         return $this->redirectToRoute('app_login');

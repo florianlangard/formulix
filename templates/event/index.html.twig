@@ -67,8 +67,8 @@
 						{% if event.date < date %}
 							<button disabled class="btn btn-disabled">Terminé</button>
 						{% else %}
-							<a href="{{path('prediction_add', {slug: event.slug})}}">
-								<button disabled class="btn btn-disabled">Course</button>
+							<a href="{{path('race_prediction_add', {slug: event.slug})}}">
+								<button class="btn btn-submit">Course</button>
 							</a>
 						{% endif %}
 					</div>

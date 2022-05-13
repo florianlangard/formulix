@@ -95,8 +95,8 @@
 							<a href="{{ path('prediction_add', {slug: nextEvent[0].slug}) }}">
 								<button class="btn btn-submit">Qualifs</button>
 							</a>
-							<a href="#">
-								<button disabled class="btn btn-disabled">Course</button>
+							<a href="{{ path('race_prediction_add', {slug: nextEvent[0].slug}) }}">
+								<button class="btn btn-submit">Course</button>
 							</a>
 						</div>
 					</div>
@@ -139,8 +139,8 @@
 								<a href="{{ path('prediction_add', {slug: nextEvent[1].slug}) }}">
 									<button class="btn btn-submit">Qualifs</button>
 								</a>
-								<a href="#">
-									<button disabled class="btn btn-disabled">Course</button>
+								<a href="{{ path('race_prediction_add', {slug: nextEvent[1].slug}) }}">
+									<button class="btn btn-submit">Course</button>
 								</a>
 							</div>
 						</div>

@@ -58,6 +58,11 @@ class Prediction
      */
     private $event;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Driver::class)
+     */
+    private $finishFirst;
+
     public function __construct()
     {
         $this->created_at = new DateTime('now', new DateTimeZone('UTC'));
@@ -148,6 +153,18 @@ class Prediction
     public function setEvent(?Event $event): self
     {
         $this->event = $event;
+
+        return $this;
+    }
+
+    public function getFinishFirst(): ?Driver
+    {
+        return $this->finishFirst;
+    }
+
+    public function setFinishFirst(?Driver $finishFirst): self
+    {
+        $this->finishFirst = $finishFirst;
 
         return $this;
     }
