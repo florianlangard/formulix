@@ -81,7 +81,7 @@ class UtilityController extends AbstractController
         
         $done = 'calculated';
         $scoreCalculator->calculateScore();
-        // $this->addFlash('success', 'calcul effectué');
+        $this->addFlash('success', 'calcul effectué');
         return $this->redirectToRoute('back_utility', ['status' => $done]);
     }
 
@@ -92,7 +92,7 @@ class UtilityController extends AbstractController
     {
         $done = 'calculated';
         $scoreCalculator->calculateGlobalScore();
-        // $this->addFlash('success', 'calcul effectué');
+        $this->addFlash('success', 'Classement Général');
         return $this->redirectToRoute('back_utility', ['status' => $done]);
     }
 }

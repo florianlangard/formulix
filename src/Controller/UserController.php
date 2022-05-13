@@ -77,6 +77,7 @@ class UserController extends AbstractController
                     }
                     $entityManager = $doctrine->getManager();
                     $entityManager->flush();
+                    $this->addFlash('success', 'Votre profil a bien été modifié');
                     // return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
                 }
             

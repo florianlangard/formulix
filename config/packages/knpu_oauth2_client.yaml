@@ -1,0 +1,14 @@
+knpu_oauth2_client:
+    clients:
+        # configure your clients as described here: https://github.com/knpuniversity/oauth2-client-bundle#configuration
+        twitch_helix:
+            # must be "twitch_helix" - it activates that type!
+            type: twitch_helix
+            # add and set these environment variables in your .env files
+            client_id: '%env(TWITCH_ID)%'
+            client_secret: '%env(TWITCH_SECRET)%'
+            # a route name you'll create
+            redirect_route: connect_twitch_helix_check
+            redirect_params: {}
+            # whether to check OAuth2 "state": defaults to true
+            # use_state: true

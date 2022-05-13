@@ -12,7 +12,7 @@ class PredictionControllerTest extends WebTestCase {
     public function testRedirectUnauthenticatedUser()
     {
         $client = static::createClient();
-        $client->request('GET', '/prediction/add/qualifying/2');
+        $client->request('GET', '/prediction/add/qualifying/course-n-18');
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
         $this->assertResponseRedirects('/login');
         $client->followRedirect();
@@ -22,7 +22,7 @@ class PredictionControllerTest extends WebTestCase {
     public function testRedirectOnExpiredEvent()
     {
         $client = static::createClient();
-        $client->request('GET', '/prediction/add/qualifying/1');
+        $client->request('GET', '/prediction/add/qualifying/course-n-0');
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
         $client->followRedirect();
         $this->assertSelectorTextContains('h1', 'Tableau de Bord');
@@ -39,7 +39,7 @@ class PredictionControllerTest extends WebTestCase {
         // simulate $testUser being logged in
         $client->loginUser($testUser);
 
-        $client->request('GET', '/prediction/add/qualifying/2');
+        $client->request('GET', '/prediction/add/qualifying/course-n-18');
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', 'Pronostics');
     }

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,6 +25,16 @@ class SecurityController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+    }
+
+    /**
+     * @Route("/connect", name="twitch_connect")
+     */
+    public function connect(ClientRegistry $clientRegistry)
+    {
+        $client = $clientRegistry->getClient('twitch_helix');
+        // dd($client);
+        return $client->redirect(['user:read:email'],[]);
     }
 
     /**

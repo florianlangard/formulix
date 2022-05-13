@@ -10,7 +10,7 @@
 {% block header %}
 	<header class="header">
 		<div class="header-container">
-			<h1 class="main-title">Calendrier de la saison 2022</h1>
+			<h1 class="main-title">Calendrier 2022</h1>
 			<p>Retrouvez ici toutes les courses de la saison.</p>
 			<p id="current-date">
 				{{date|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY")}}
@@ -39,7 +39,7 @@
 							</div>
 						</div>
 						<p>Manche n°
-							{{ event.round }}</p>
+							{{ event.round }} - {{ event.locality }}</p>
 						<p>Qualifications :</p>
 						<p>
 							{{ event.qualifyingDate|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}

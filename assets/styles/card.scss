@@ -4,7 +4,7 @@
     background-color: vars.$lightGrey;
     padding: 10px;
     margin: 10px;
-    border-radius: 10px;
+    border-radius: 0.2em;
     border: 1px solid grey;
     box-shadow: 0 0 5px black;
     min-width: 300px;
@@ -96,4 +96,10 @@ span.fi {
         display: flex;
         flex-direction: column;
     }
+
+    // Flag icon
+span.fi {
+    width: 48px;
+    height: 48px;
+}
 }

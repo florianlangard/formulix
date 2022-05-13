@@ -49,12 +49,24 @@
                     </label>
                 </div>
             #}
-
+            <div>
             <button class="btn btn-submit" type="submit">
-                Se connecter
+               Se connecter
             </button>
-            <p>Pas encore inscrit? <a href="{{path('user_new')}}">Créer un compte</a></p>
-            <p><a href="{{path('home')}}">Aller à l'accueil</a></p>
+            
+            <div class="btn btn-twitch">
+                <a href="{{ path('twitch_connect') }}">
+                    <div>
+                        <img src="{{ asset('assets/twitch-brands.svg') }}" alt="" class="icon twitch-icon"/>
+                    </div>
+                    <div>
+                        <p>S'authentifier avec Twitch</p>
+                    </div>
+                 </a>
+            </div>
+            </div>
+            <p>Pas encore inscrit / pas de compte Twitch? <a href="{{path('user_new')}}">Créer un compte</a></p>
+            <p><a href="{{path('home')}}">Aller à l'accueil en tant que visiteur</a></p>
         </form>
     </div>
 </div>
