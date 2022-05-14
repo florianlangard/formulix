@@ -38,6 +38,19 @@ class PredictionRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findExistingPredictionType($event, $user)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.event = :event')
+            ->andWhere('p.user = :user')
+            ->andWhere('p.pole != :null')->setParameter('null', serialize(null))
+            ->setParameter('event', $event)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     public function getPredictionCount($eventId)
     {
         return $this->createQueryBuilder('p')

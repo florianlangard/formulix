@@ -29,6 +29,20 @@ class RacePredictionType extends AbstractType
                 'choice_label' => 'fullname',
                 'placeholder' => 'Choisissez...',
             ])
+            ->add('finishSecond', EntityType::class, [
+                'class' => Driver::class,
+                'constraints' => new NotBlank(),
+                'label' => '2ème position',
+                'choice_label' => 'fullname',
+                'placeholder' => 'Choisissez...',
+            ])
+            ->add('finishThird', EntityType::class, [
+                'class' => Driver::class,
+                'constraints' => new NotBlank(),
+                'label' => '3ème position',
+                'choice_label' => 'fullname',
+                'placeholder' => 'Choisissez...',
+            ])
         ;
     }
 

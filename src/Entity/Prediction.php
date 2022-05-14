@@ -26,13 +26,13 @@ class Prediction
     private $pole;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="string", length=30, nullable=true)
      * @Assert\Regex(pattern="/^\d[:]\d{2}[.]\d{3}$/", message="le format est invalide")
      */
     private $time;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $created_at;
 
@@ -63,10 +63,35 @@ class Prediction
      */
     private $finishFirst;
 
-    public function __construct()
-    {
-        $this->created_at = new DateTime('now', new DateTimeZone('UTC'));
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity=Driver::class)
+     */
+    private $finishSecond;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Driver::class)
+     */
+    private $finishThird;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $raceCreatedAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $raceUpdatedAt;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $raceScore;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $totalScore;
 
     public function getId(): ?int
     {
@@ -165,6 +190,78 @@ class Prediction
     public function setFinishFirst(?Driver $finishFirst): self
     {
         $this->finishFirst = $finishFirst;
+
+        return $this;
+    }
+
+    public function getFinishSecond(): ?Driver
+    {
+        return $this->finishSecond;
+    }
+
+    public function setFinishSecond(?Driver $finishSecond): self
+    {
+        $this->finishSecond = $finishSecond;
+
+        return $this;
+    }
+
+    public function getFinishThird(): ?Driver
+    {
+        return $this->finishThird;
+    }
+
+    public function setFinishThird(?Driver $finishThird): self
+    {
+        $this->finishThird = $finishThird;
+
+        return $this;
+    }
+
+    public function getRaceCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->raceCreatedAt;
+    }
+
+    public function setRaceCreatedAt(?\DateTimeInterface $raceCreatedAt): self
+    {
+        $this->raceCreatedAt = $raceCreatedAt;
+
+        return $this;
+    }
+
+    public function getRaceUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->raceUpdatedAt;
+    }
+
+    public function setRaceUpdatedAt(?\DateTimeInterface $raceUpdatedAt): self
+    {
+        $this->raceUpdatedAt = $raceUpdatedAt;
+
+        return $this;
+    }
+
+    public function getRaceScore(): ?int
+    {
+        return $this->raceScore;
+    }
+
+    public function setRaceScore(?int $raceScore): self
+    {
+        $this->raceScore = $raceScore;
+
+        return $this;
+    }
+
+    public function getTotalScore(): ?int
+    {
+        return $this->totalScore;
+    }
+
+    public function setTotalScore(?int $totalScore): self
+    {
+        $this->totalScore = $totalScore;
 
         return $this;
     }

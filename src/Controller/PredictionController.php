@@ -2,17 +2,20 @@
 
 namespace App\Controller;
 
+use App\Entity\Driver;
 use DateTime;
 use App\Entity\Event;
 use App\Entity\Score;
 use App\Entity\Prediction;
 use App\Form\PredictionFormType;
 use App\Form\RacePredictionType;
+use App\Repository\DriverRepository;
 use App\Service\FormatConverter;
 use App\Repository\UserRepository;
 use App\Repository\EventRepository;
 use App\Repository\ScoreRepository;
 use App\Repository\PredictionRepository;
+use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,11 +56,12 @@ class PredictionController extends AbstractController
         $user = $this->getUser();
         $currentDate = new DateTime();
 
+        // Redirect if wrong event param
         if( $event === null) {
             $this->addFlash('error', 'pas d\'évènement trouvé');
             return $this->redirectToRoute('events_list');
         }
-        // dd($currentDate, $event->getDate());
+        // Redirect if event already began
         if ($currentDate > $event->getQualifyingDate()) {
             return $this->redirectToRoute('home', ['error' => 'Trop tard, ça a déjà commencé!']);
         }
@@ -67,12 +71,19 @@ class PredictionController extends AbstractController
             $rankedUser = $scoreRepository->findOneBy(['user' => $user, 'season' => $event->getSeason()]);
             $existingPrediction = $predictionRepository->findOneBy(['user' => $user, 'event' => $event]);
             
+            // dd($existingPrediction->getPole());
+
             if (!empty($existingPrediction)) {
                 // dd($existingPrediction);
-                return $this->redirectToRoute('prediction_edit', ['id' => $existingPrediction->getId()]);
+                if ($existingPrediction->getPole() !== null) {
+                    return $this->redirectToRoute('prediction_edit', ['id' => $existingPrediction->getId()]);
+                }
             }
-
-            $prediction = new Prediction();
+            if (empty($existingPrediction)) {
+                $prediction = new Prediction();
+            } else {
+                $prediction = $existingPrediction;
+            }
             
             $form = $this->createForm(PredictionFormType::class, $prediction);
 
@@ -89,6 +100,7 @@ class PredictionController extends AbstractController
                 // Relations with prediction 
                 $prediction->setUser($user);
                 $prediction->setEvent($event);
+                $prediction->setCreatedAt(new DateTime('now', new DateTimeZone('UTC')));
 
                 $pole = $form->get('pole')->getData();
                 $prediction->setPole($pole);
@@ -146,7 +158,7 @@ class PredictionController extends AbstractController
             return $this->redirectToRoute('events_list');
         }
         // dd($currentDate, $event->getDate());
-        if ($currentDate > $event->getQualifyingDate()) {
+        if ($currentDate > $event->getDate()) {
             return $this->redirectToRoute('home', ['error' => 'Trop tard, ça a déjà commencé!']);
         }
         
@@ -156,10 +168,17 @@ class PredictionController extends AbstractController
             $existingPrediction = $predictionRepository->findOneBy(['user' => $user, 'event' => $event]);
             
             if (!empty($existingPrediction)) {
-                return $this->redirectToRoute('prediction_edit', ['id' => $existingPrediction->getId()]);
+                // dd($existingPrediction);
+                if ($existingPrediction->getFinishFirst() !== null) {
+                    return $this->redirectToRoute('race_prediction_edit', ['id' => $existingPrediction->getId()]);
+                }
             }
 
-            $prediction = new Prediction();
+            if (empty($existingPrediction)) {
+                $prediction = new Prediction();
+            } else {
+                $prediction = $existingPrediction;
+            }
             
             $form = $this->createForm(RacePredictionType::class, $prediction);
 
@@ -176,16 +195,13 @@ class PredictionController extends AbstractController
                 // Relations with prediction 
                 $prediction->setUser($user);
                 $prediction->setEvent($event);
+                $prediction->setRaceCreatedAt(new DateTime('now', new DateTimeZone('UTC')));
 
-                $pole = $form->get('pole')->getData();
-                $prediction->setPole($pole);
+                $prediction->setFinishFirst($form->get('finishFirst')->getData());
+                $prediction->setFinishSecond($form->get('finishSecond')->getData());
+                $prediction->setFinishThird($form->get('finishThird')->getData());
 
-                $time = $converter->formatTimeString(
-                    $form->get('min')->getData(),
-                    $form->get('sec')->getData(),
-                    $form->get('msec')->getData()
-                );
-                $prediction->setTime($time);
+
 
                 if ($rankedUser === null){
                     $score = new Score();
@@ -245,6 +261,46 @@ class PredictionController extends AbstractController
                 $prediction->setTime($time);
 
                 $prediction->setUpdatedAt(new DateTime());
+
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($prediction);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'prono modifié, Bonne chance!');
+                return $this->redirectToRoute('home');
+            }
+
+            return $this->render('prediction/index.html.twig', ['form' => $form->createView(), 'event' => $event]);
+        // }
+        // return $this->redirectToRoute('login');
+    }
+
+    /**
+     * @Route("/prediction/edit/race/{id}", name="race_prediction_edit", methods={"GET", "POST", "PATCH", "PUT"})
+     */
+    public function editRacePrediction(Request $request, Prediction $prediction = null, PredictionRepository $predictionRepository, ManagerRegistry $doctrine, FormatConverter $converter): Response
+    {
+        if( $prediction === null) {
+            $this->addFlash('error', 'pas d\'évènement trouvé');
+            return $this->redirectToRoute('events_list');
+        }
+        // if ($this->getUser()) {
+            $form = $this->createForm(RacePredictionType::class, $prediction);
+
+            $form->handleRequest($request);
+            $event = $prediction->getEvent();
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                // get identified User
+                $user = $this->getUser();
+                // Relations with prediction 
+                $prediction->setUser($user);
+
+                $prediction->setFinishFirst($form->get('finishFirst')->getData());
+                $prediction->setFinishSecond($form->get('finishSecond')->getData());
+                $prediction->setFinishThird($form->get('finishThird')->getData());
+
+                $prediction->setRaceUpdatedAt(new DateTime('now', new DateTimeZone('UTC')));
 
                 $entityManager = $doctrine->getManager();
                 $entityManager->persist($prediction);
