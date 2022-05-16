@@ -95,6 +95,9 @@ class ScoreCalculator
                 
 
                 switch($diff) {
+                    case($diff === 0):
+                        $predictionScore += 20;
+                        break;
                     case ($diff <= 10):
                         $predictionScore += 16;
                         break;

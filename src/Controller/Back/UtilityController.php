@@ -6,6 +6,7 @@ use App\Repository\EventRepository;
 use App\Repository\PredictionRepository;
 use App\Repository\ResultRepository;
 use App\Repository\ScoreRepository;
+use App\Service\DataImporter;
 use App\Service\FOneApi;
 use App\Service\ScoreCalculator;
 use DateTime;
@@ -64,12 +65,14 @@ class UtilityController extends AbstractController
     /**
      * @Route("/back/utility/get_result", name="back_utility_get_result")
      */
-    public function getLastResult(EventRepository $eventRepository, ResultRepository $resultRepository, FOneApi $fOneApi): Response
+    public function getLastResult(EventRepository $eventRepository, ResultRepository $resultRepository, FOneApi $fOneApi, DataImporter $dataImporter): Response
     {
         $done = 'fetched';
         // $lastEvent = $eventRepository->findLastEvent(new DateTime());
         // dd($lastEvent);
         // $data = $fOneApi->fetchQualifyingResults($lastEvent[0]->getSeason(), $lastEvent[0]->getRound());
+        $test = $dataImporter->ImportQualifyingResults('2022', '5');
+        // dd($test);
         return $this->redirectToRoute('back_utility', ['status' => $done]);
     }
 

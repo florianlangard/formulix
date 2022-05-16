@@ -45,4 +45,14 @@ class FOneApi
         $content = $response->toArray();
         return $content;
     }
+
+    public function fetchRaceResults($year, $round)
+    {
+        $response  = $this->client->request(
+            'GET',
+            'https://ergast.com/api/f1/'.$year.'/'.$round.'/results.json'
+        );
+        $content = $response->toArray();
+        return $content;
+    }
 }
