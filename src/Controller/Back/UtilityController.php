@@ -71,7 +71,7 @@ class UtilityController extends AbstractController
         // $lastEvent = $eventRepository->findLastEvent(new DateTime());
         // dd($lastEvent);
         // $data = $fOneApi->fetchQualifyingResults($lastEvent[0]->getSeason(), $lastEvent[0]->getRound());
-        $test = $dataImporter->ImportQualifyingResults('2022', '5');
+        // $test = $dataImporter->ImportSeasonDrivers('2022');
         // dd($test);
         return $this->redirectToRoute('back_utility', ['status' => $done]);
     }
@@ -83,7 +83,7 @@ class UtilityController extends AbstractController
     {
         
         $done = 'calculated';
-        $scoreCalculator->calculateScore();
+        // $scoreCalculator->calculateScore();
         $this->addFlash('success', 'calcul effectué');
         return $this->redirectToRoute('back_utility', ['status' => $done]);
     }

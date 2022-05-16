@@ -46,13 +46,11 @@ class ScoreCalculator
      *
      * @return void
      */
-    public function calculateScore()
+    public function calculateScore($event)
     {
         // Get last Event and his Result
-        $date = new DateTime();
-        $lastEvent = $this->eventRepository->findLastEvent($date);
-        $lastResult =  $this->resultRepository->findOneBy(['event' => $lastEvent[0]]);
-        $predictions = $this->predictionRepository->findBy(['event' => $lastEvent[0]]);
+        $lastResult =  $this->resultRepository->findOneBy(['event' => $event]);
+        $predictions = $this->predictionRepository->findBy(['event' => $event]);
         // dd($predictions);
         
         
