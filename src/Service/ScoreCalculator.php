@@ -41,57 +41,47 @@ class ScoreCalculator
     }
 
     /**
-     * Calculate the score of every prediction placed on an event
-     * Must be called when the result of the given event has been imported
+     * Calculate the score of every prediction placed on an event.
+     * Must be called when the result of the given event has been imported.
      *
+     * @param App\Entity\Event $event
      * @return void
      */
-    public function calculateScore($event)
+    public function calculateQualifyingScore($event)
     {
         // Get last Event and his Result
         $lastResult =  $this->resultRepository->findOneBy(['event' => $event]);
         $predictions = $this->predictionRepository->findBy(['event' => $event]);
-        // dd($predictions);
-        
         
         // Logic to convert result time in the required format to compare
         $data = $lastResult->getTime();
-        $time = explode(':', $data);
-        $minute = intval($time[0]);
-        $second = explode('.', $time[1]);
-        $sec = intval($second[0]);
-        $msec = intval($second[1]);
-
-        $resultTime = $this->converter->convertToMs($minute, $sec, $msec);
-        
-        
+        $unformatted = $this->converter->unformatTimeString($data);
+        $resultTime = $this->converter->convertToMs(
+            $unformatted['minute'], 
+            $unformatted['seconds'], 
+            $unformatted['milliseconds']
+        );
         // Logic to convert every prediction time in required format to compare
         // and calculate each prediction score
         foreach ($predictions as $prediction) 
         {
-            
             if ($prediction->getScore() === null) 
             {
                 $predictionScore = 0;
                 $pole = $prediction->getPole();
-                
                 if ($pole === $lastResult->getPole()) 
                 {
                     $predictionScore += 10;
                 }
-                
                 $data = $prediction->getTime();
-                $time = explode(':', $data);
-                $minute = intval($time[0]);
-                $second = explode('.', $time[1]);
-                $sec = intval($second[0]);
-                $msec = intval($second[1]);
+                $unformatted = $this->converter->unformatTimeString($data);
+                $predictedTime = $this->converter->convertToMs(
+                    $unformatted['minute'], 
+                    $unformatted['seconds'], 
+                    $unformatted['milliseconds']
+                );
 
-                $predictedTime = $this->converter->convertToMs($minute, $sec, $msec);
-                $diff = abs($resultTime - $predictedTime);
-                // dump($diff);
-                
-
+                $diff = abs($resultTime - $predictedTime);               
                 switch($diff) {
                     case($diff === 0):
                         $predictionScore += 20;
@@ -111,16 +101,13 @@ class ScoreCalculator
                     default:
                         $predictionScore += 1;
                 }
-
                 $prediction->setScore($predictionScore);
                 $em = $this->doctrine->getManager();
                 $em->persist($prediction);
                 $em->flush();
             }
-            // return;
         }
     }
-
 
     /**
      * Calculate global score of all users who placed a prediction on a given event.

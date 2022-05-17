@@ -79,12 +79,13 @@ class UtilityController extends AbstractController
     /**
      * @Route("/back/utility/calculate_scores", name="back_utility_calculate_scores")
      */
-    public function calculateScores(ScoreCalculator $scoreCalculator): Response
+    public function calculateScores(ScoreCalculator $scoreCalculator, EventRepository $eventRepository): Response
     {
         
         $done = 'calculated';
-        // $scoreCalculator->calculateScore();
-        $this->addFlash('success', 'calcul effectué');
+        $event = $eventRepository->findOneBy(['round' => 5]);
+        $scoreCalculator->calculateQualifyingScore($event);
+        // $this->addFlash('success', 'calcul effectué');
         return $this->redirectToRoute('back_utility', ['status' => $done]);
     }
 

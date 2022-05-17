@@ -10,6 +10,8 @@ use App\Entity\Score;
 use App\Repository\DriverRepository;
 use App\Repository\EventRepository;
 use App\Repository\ScoreRepository;
+use App\Repository\UserRepository;
+use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
@@ -27,14 +29,16 @@ class PopulateCommand extends Command
     private $eventRepository;
     private $driverRepository;
     private $scoreRepository;
+    private $userRepository;
 
-    public function __construct(EntityManagerInterface $em, EventRepository $eventRepository, DriverRepository $driverRepository, ScoreRepository $scoreRepository)
+    public function __construct(EntityManagerInterface $em, UserRepository $userRepository, EventRepository $eventRepository, DriverRepository $driverRepository, ScoreRepository $scoreRepository)
     {
         parent::__construct();
         $this->em = $em;
         $this->eventRepository = $eventRepository;
         $this->driverRepository = $driverRepository;
         $this->scoreRepository = $scoreRepository;
+        $this->userRepository = $userRepository;
     }
 
     protected function configure(): void
@@ -47,27 +51,29 @@ class PopulateCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $round = $input->getArgument('round');
 
-        for ($i = 1; $i <= 19; $i++) {
-            $user = new User();
-            $user->setEmail('user'.$i.'@test.com');
-            $user->setPassword('$2y$13$.1ruvuVJZXHjbmUvQbsZP.wUm8ayYIjUkassWNTxYPxWfvLw.9b7O');
-            $user->setRoles(['ROLE_USER']);
-            $user->setPersonaname('user'.$i);
+        // for ($i = 1; $i <= 19; $i++) {
+        //     $user = new User();
+        //     $user->setEmail('user'.$i.'@test.com');
+        //     $user->setPassword('$2y$13$.1ruvuVJZXHjbmUvQbsZP.wUm8ayYIjUkassWNTxYPxWfvLw.9b7O');
+        //     $user->setRoles(['ROLE_USER']);
+        //     $user->setPersonaname('user'.$i);
 
-            $users[] = $user;
+        //     $users[] = $user;
 
-            $this->em->persist($user);
+        //     $this->em->persist($user);
             
-        }
+        // }
+
+        $users = $this->userRepository->findAll();
 
         foreach ($users as $u) {
             $prediction = new Prediction();
             $prediction->setEvent($this->eventRepository->findOneBy(['round' => $round, 'season' => '2022'])); // Id of last past event
-            $prediction->setCreatedAt(new DateTime());
+            $prediction->setCreatedAt(new DateTime('now', new DateTimeZone('UTC')));
             $prediction->setUser($u);
-            $driver = $this->driverRepository->find(rand(1,20));
+            $driver = $this->driverRepository->findOneBy(['id' => rand(43,63)]);
             $prediction->setPole($driver);
-            $prediction->setTime('1:'.rand(15, 20).'.'.rand(000,999));
+            $prediction->setTime('1:'.rand(25, 35).'.'.rand(000,999));
 
             $this->em->persist($prediction);
 
