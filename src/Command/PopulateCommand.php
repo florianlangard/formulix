@@ -71,9 +71,23 @@ class PopulateCommand extends Command
             $prediction->setEvent($this->eventRepository->findOneBy(['round' => $round, 'season' => '2022'])); // Id of last past event
             $prediction->setCreatedAt(new DateTime('now', new DateTimeZone('UTC')));
             $prediction->setUser($u);
-            $driver = $this->driverRepository->findOneBy(['id' => rand(43,63)]);
-            $prediction->setPole($driver);
+            $pole = $this->driverRepository->findOneBy(['id' => rand(43,63)]);
+            $prediction->setPole($pole);
             $prediction->setTime('1:'.rand(25, 35).'.'.rand(000,999));
+
+            $first = $this->driverRepository->findOneBy(['id' => rand(43,63)]);
+            $prediction->setFinishFirst($first);
+            $second = $this->driverRepository->findOneBy(['id' => rand(43,63)]);
+            while ($second === $first) {
+                $second = $this->driverRepository->findOneBy(['id' => rand(43,63)]);
+            }
+            $third = $this->driverRepository->findOneBy(['id' => rand(43,63)]);
+            while ($third === $first || $third === $second) {
+                $third = $this->driverRepository->findOneBy(['id' => rand(43,63)]);
+            }
+            $prediction->setFinishSecond($second);
+            $prediction->setFinishThird($third);
+            $prediction->setRaceCreatedAt(new DateTime('now', new DateTimeZone('UTC')));
 
             $this->em->persist($prediction);
 

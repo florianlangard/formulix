@@ -41,7 +41,7 @@ class ScoreCalculator
     }
 
     /**
-     * Calculate the score of every prediction placed on an event.
+     * Calculate the score of every qualifying prediction placed on an event.
      * Must be called when the result of the given event has been imported.
      *
      * @param App\Entity\Event $event
@@ -52,7 +52,9 @@ class ScoreCalculator
         // Get last Event and his Result
         $lastResult =  $this->resultRepository->findOneBy(['event' => $event]);
         $predictions = $this->predictionRepository->findBy(['event' => $event]);
-        
+        if ($lastResult->getPole() === null) {
+            return false;
+        }
         // Logic to convert result time in the required format to compare
         $data = $lastResult->getTime();
         $unformatted = $this->converter->unformatTimeString($data);
@@ -110,43 +112,82 @@ class ScoreCalculator
     }
 
     /**
-     * Calculate global score of all users who placed a prediction on a given event.
-     * Must be called when every individual prediction score has been calculated.
+     * Calculate the score of every race prediction placed on an event.
+     * Must be called when the result of the given event has been imported.
      *
+     * @param App\Entity\Event $event
      * @return void
      */
-    public function calculateGlobalScore()
+    public function calculateRaceScore($event)
     {
-        $date = new DateTime();
-        $lastEvent = $this->eventRepository->findLastEvent($date);
-        $predictions = $this->predictionRepository->findBy(['event' => $lastEvent]);
-        // dd($predictions);
+        // Get last Event and his Result
+        $lastResult =  $this->resultRepository->findOneBy(['event' => $event]);
+        $predictions = $this->predictionRepository->findBy(['event' => $event]);
+        if ($lastResult->getFinishedFirst() === null) {
+            return false;
+        }
+        $first = $lastResult->getFinishedFirst();
+        $second = $lastResult->getFinishedSecond();
+        $third = $lastResult->getFinishedThird();
 
         foreach ($predictions as $prediction) {
-            $user = $prediction->getUser();
-            $score = $this->scoreRepository->findOneBy(['user' => $user, 'season' => '2022']);
-            // dd($score, $score->getLastEvent(), $lastEvent);
-            if ($score->getLastEvent() !== null) {
-                if ($score->getLastEvent()->getId() !== $lastEvent[0]->getId()) {
-                    $score->setLastEvent($lastEvent[0]);
-                    $current = $score->getTotal();
-                    $score->setTotal($current += $prediction->getScore());
+            if ($prediction->getRaceScore() === null) {
+                $racePredictionScore = 1;
+                if ($prediction->getFinishFirst() === $first) {
+                    $racePredictionScore += 9;
                 }
+                if ($prediction->getFinishSecond() === $second) {
+                    $racePredictionScore += 6;
+                }
+                if ($prediction->getFinishThird() === $third) {
+                    $racePredictionScore += 4;
+                }
+                $prediction->setRaceScore($racePredictionScore);
+                $em = $this->doctrine->getManager();
+                $em->persist($prediction);
+                $em->flush();
             }
-            else {
-                $score->setLastEvent($lastEvent[0]);
-                $current = $score->getTotal();
-                $score->setTotal($current += $prediction->getScore());
+        }
+    }
 
+    /**
+     * Calculate global score for every prediction placed on a given event.
+     * Must be called when every individual prediction score has been calculated.
+     *
+     * @param App\Entity\Event $event
+     * @return void
+     */
+    public function calculateGlobalEventScore($event)
+    {
+        $predictions = $this->predictionRepository->findBy(['event' => $event]);
+        
+        foreach ($predictions as $prediction) {
+            $qualifyingScore = $prediction->getScore();
+            $raceScore = $prediction->getRaceScore();
+            if ($qualifyingScore === null) {
+                $qualifyingScore = 0;
             }
-            
+            if ($raceScore === null) {
+                $raceScore = 0;
+            }
+            $globalEventScore = $qualifyingScore + $raceScore;
 
-            // dd($score);
+            $prediction->setTotalScore($globalEventScore);
             $em = $this->doctrine->getManager();
-            $em->persist($score);
-            dump($score);
+            $em->persist($prediction);
             $em->flush();
         }
+    }
+
+    /**
+     * Calculate Global Rankings.
+     *
+     * @param App\Entity\Event $event
+     * @return void
+     */
+    public function calculateGlobalRankings($event)
+    {
+        
     }
 
 }

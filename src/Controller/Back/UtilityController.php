@@ -84,18 +84,38 @@ class UtilityController extends AbstractController
         
         $done = 'calculated';
         $event = $eventRepository->findOneBy(['round' => 5]);
-        $scoreCalculator->calculateQualifyingScore($event);
-        // $this->addFlash('success', 'calcul effectué');
+
+        $calculateQualifyingScore = $scoreCalculator->calculateQualifyingScore($event);
+        if ($calculateQualifyingScore === false) {
+            $this->addFlash('error', 'Impossible de calculer ces scores (Qualifs), résultats indisponibles');
+            return $this->redirectToRoute('back_utility');
+        } else {
+            $this->addFlash('success', 'calcul des résultats (Qualifs) effectué');
+        }
+
+        $calculateRaceScore = $scoreCalculator->calculateRaceScore($event);
+        if ($calculateRaceScore === false) {
+            $this->addFlash('error', 'Impossible de calculer les scores (Course), résultats indisponibles');
+            return $this->redirectToRoute('back_utility');
+        } else {
+            $this->addFlash('success', 'calcul des résultats (Course) effectué');
+        }
+
+        $scoreCalculator->calculateGlobalEventScore($event);
+        $this->addFlash('success', 'calcul des scores globaux effectué');
+
         return $this->redirectToRoute('back_utility', ['status' => $done]);
     }
 
     /**
      * @Route("/back/utility/calculate_rankings", name="back_utility_calculate_rankings")
      */
-    public function calculateGlobalRanking(ScoreCalculator $scoreCalculator): Response
+    public function calculateGlobalRanking(ScoreCalculator $scoreCalculator, EventRepository $eventRepository): Response
     {
         $done = 'calculated';
-        $scoreCalculator->calculateGlobalScore();
+        $event = $eventRepository->findOneBy(['round' => 5]);
+
+        $scoreCalculator->calculateGlobalEventScore($event);
         $this->addFlash('success', 'Classement Général');
         return $this->redirectToRoute('back_utility', ['status' => $done]);
     }
