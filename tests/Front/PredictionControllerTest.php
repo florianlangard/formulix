@@ -2,6 +2,7 @@
 
 namespace App\Tests\Front;
 
+use App\Repository\DriverRepository;
 use App\Repository\UserRepository;
 use App\Repository\PredictionRepository;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +29,15 @@ class PredictionControllerTest extends WebTestCase {
         $this->assertSelectorTextContains('h1', 'Tableau de Bord');
     }
 
+    public function testRedirectOnExpiredRaceEvent()
+    {
+        $client = static::createClient();
+        $client->request('GET', '/prediction/add/race/course-n-0');
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+        $client->followRedirect();
+        $this->assertSelectorTextContains('h1', 'Tableau de Bord');
+    }
+
     public function testAuthenticatedUserAccessPrediction()
     {
         $client = static::createClient();
@@ -43,7 +53,5 @@ class PredictionControllerTest extends WebTestCase {
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', 'Pronostics');
     }
-
-
 
 }

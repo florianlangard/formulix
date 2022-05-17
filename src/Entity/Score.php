@@ -38,6 +38,16 @@ class Score
      */
     private $lastEvent;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $qualifyingScore;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $raceScore;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -87,6 +97,30 @@ class Score
     public function setLastEvent(?Event $lastEvent): self
     {
         $this->lastEvent = $lastEvent;
+
+        return $this;
+    }
+
+    public function getQualifyingScore(): ?int
+    {
+        return $this->qualifyingScore;
+    }
+
+    public function setQualifyingScore(?int $qualifyingScore): self
+    {
+        $this->qualifyingScore = $qualifyingScore;
+
+        return $this;
+    }
+
+    public function getRaceScore(): ?int
+    {
+        return $this->raceScore;
+    }
+
+    public function setRaceScore(?int $raceScore): self
+    {
+        $this->raceScore = $raceScore;
 
         return $this;
     }

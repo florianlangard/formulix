@@ -9,10 +9,10 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SeasonDataCommand extends Command
+class RaceResultsCommand extends Command
 {
-    protected static $defaultName = 'app:season:data';
-    protected static $defaultDescription = 'Fetch given season data from API';
+    protected static $defaultName = 'app:race:result';
+    protected static $defaultDescription = 'Get race result';
 
     private $dataImporter;
 
@@ -25,19 +25,19 @@ class SeasonDataCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('year', InputArgument::REQUIRED, 'which season ?');
+            ->addArgument('year', InputArgument::REQUIRED, 'enter the season you look for')
+            ->addArgument('round', InputArgument::REQUIRED, 'enter the round number of requested race');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
         $year = $input->getArgument('year');
+        $round = $input->getArgument('round');
 
-        $this->dataImporter->ImportSeasonDrivers($year);  
-        $this->dataImporter->ImportSeasonSchedule($year);  
-        
-        $io->success('Data for season '.$year.' fetched!');
+        $this->dataImporter->ImportRaceResults($year, $round);
 
+        $io->success('Results fetched!');
         return Command::SUCCESS;
     }
 }

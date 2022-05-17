@@ -6,6 +6,7 @@ use App\Repository\EventRepository;
 use App\Repository\PredictionRepository;
 use App\Repository\ResultRepository;
 use App\Repository\ScoreRepository;
+use App\Service\DataImporter;
 use App\Service\FOneApi;
 use App\Service\ScoreCalculator;
 use DateTime;
@@ -64,35 +65,56 @@ class UtilityController extends AbstractController
     /**
      * @Route("/back/utility/get_result", name="back_utility_get_result")
      */
-    public function getLastResult(EventRepository $eventRepository, ResultRepository $resultRepository, FOneApi $fOneApi): Response
+    public function getLastResult(EventRepository $eventRepository, ResultRepository $resultRepository, FOneApi $fOneApi, DataImporter $dataImporter): Response
     {
         $done = 'fetched';
         // $lastEvent = $eventRepository->findLastEvent(new DateTime());
         // dd($lastEvent);
         // $data = $fOneApi->fetchQualifyingResults($lastEvent[0]->getSeason(), $lastEvent[0]->getRound());
+        // $test = $dataImporter->ImportSeasonDrivers('2022');
+        // dd($test);
         return $this->redirectToRoute('back_utility', ['status' => $done]);
     }
 
     /**
      * @Route("/back/utility/calculate_scores", name="back_utility_calculate_scores")
      */
-    public function calculateScores(ScoreCalculator $scoreCalculator): Response
+    public function calculateScores(ScoreCalculator $scoreCalculator, EventRepository $eventRepository): Response
     {
         
         $done = 'calculated';
-        $scoreCalculator->calculateScore();
-        $this->addFlash('success', 'calcul effectué');
+        $event = $eventRepository->findOneBy(['round' => 5]);
+
+        $calculateQualifyingScore = $scoreCalculator->calculateQualifyingScore($event);
+        if ($calculateQualifyingScore === false) {
+            $this->addFlash('error', 'Impossible de calculer ces scores (Qualifs), résultats indisponibles');
+            return $this->redirectToRoute('back_utility');
+        } else {
+            $this->addFlash('success', 'calcul des résultats (Qualifs) effectué');
+        }
+
+        $calculateRaceScore = $scoreCalculator->calculateRaceScore($event);
+        if ($calculateRaceScore === false) {
+            $this->addFlash('error', 'Impossible de calculer les scores (Course), résultats indisponibles');
+            return $this->redirectToRoute('back_utility');
+        } else {
+            $this->addFlash('success', 'calcul des résultats (Course) effectué');
+        }
+
+        $scoreCalculator->calculateGlobalEventScore($event);
+        $this->addFlash('success', 'calcul des scores globaux effectué');
+
         return $this->redirectToRoute('back_utility', ['status' => $done]);
     }
 
     /**
      * @Route("/back/utility/calculate_rankings", name="back_utility_calculate_rankings")
      */
-    public function calculateGlobalRanking(ScoreCalculator $scoreCalculator): Response
+    public function calculateGlobalRanking(ScoreCalculator $scoreCalculator, EventRepository $eventRepository): Response
     {
-        $done = 'calculated';
-        $scoreCalculator->calculateGlobalScore();
-        $this->addFlash('success', 'Classement Général');
-        return $this->redirectToRoute('back_utility', ['status' => $done]);
+        $event = $eventRepository->findOneBy(['round' => 5]);
+        $scoreCalculator->calculateGlobalRankings($event);
+        $this->addFlash('success', 'calcul du classement général effectué');
+        return $this->redirectToRoute('back_utility');
     }
 }

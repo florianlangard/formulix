@@ -39,6 +39,21 @@ class Result
      */
     private $updatedAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Driver::class)
+     */
+    private $finishedFirst;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Driver::class)
+     */
+    private $finishedSecond;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Driver::class)
+     */
+    private $finishedThird;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -88,6 +103,42 @@ class Result
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getFinishedFirst(): ?Driver
+    {
+        return $this->finishedFirst;
+    }
+
+    public function setFinishedFirst(?Driver $finishedFirst): self
+    {
+        $this->finishedFirst = $finishedFirst;
+
+        return $this;
+    }
+
+    public function getFinishedSecond(): ?Driver
+    {
+        return $this->finishedSecond;
+    }
+
+    public function setFinishedSecond(?Driver $finishedSecond): self
+    {
+        $this->finishedSecond = $finishedSecond;
+
+        return $this;
+    }
+
+    public function getFinishedThird(): ?Driver
+    {
+        return $this->finishedThird;
+    }
+
+    public function setFinishedThird(?Driver $finishedThird): self
+    {
+        $this->finishedThird = $finishedThird;
 
         return $this;
     }

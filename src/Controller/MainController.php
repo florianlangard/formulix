@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use DateTime;
 use App\Entity\Driver;
+use App\Entity\Prediction;
 use App\Entity\Result;
 use App\Repository\DriverRepository;
 use App\Service\FOneApi;
@@ -68,7 +69,7 @@ class MainController extends AbstractController
             else {
                 $lastEventPodium = null;
             }
-            // dd($lastEventPodium);
+            
             return $this->render('main/index.html.twig',[
                 'nextEvent' => $nextEvent, 
                 'lastEvent' => $lastEvent, 
