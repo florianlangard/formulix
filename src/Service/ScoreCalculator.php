@@ -6,6 +6,7 @@ use App\Repository\EventRepository;
 use App\Repository\PredictionRepository;
 use App\Repository\ResultRepository;
 use App\Repository\ScoreRepository;
+use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
@@ -17,7 +18,6 @@ class ScoreCalculator
     private $doctrine;
     private $predictionRepository;
     private $scoreRepository;
-    private $eventRepository;
     private $resultRepository;
     private $converter;
 
@@ -26,7 +26,6 @@ class ScoreCalculator
         ManagerRegistry $doctrine,
         PredictionRepository $predictionRepository,
         ScoreRepository $scoreRepository,
-        EventRepository $eventRepository,
         ResultRepository $resultRepository,
         FormatConverter $converter
         )
@@ -35,7 +34,6 @@ class ScoreCalculator
         $this->doctrine = $doctrine;
         $this->predictionRepository = $predictionRepository;
         $this->scoreRepository = $scoreRepository;
-        $this->eventRepository = $eventRepository;
         $this->resultRepository = $resultRepository;
         $this->converter = $converter;
     }
@@ -105,9 +103,8 @@ class ScoreCalculator
                 }
                 $prediction->setScore($predictionScore);
                 $em = $this->doctrine->getManager();
-                $em->persist($prediction);
-                $em->flush();
             }
+            $em->flush();
         }
     }
 
@@ -142,11 +139,19 @@ class ScoreCalculator
                 if ($prediction->getFinishThird() === $third) {
                     $racePredictionScore += 4;
                 }
+                if ($prediction->getFinishFirst() === $second || $prediction->getFinishFirst() === $third) {
+                    $racePredictionScore += 3;
+                }
+                if ($prediction->getFinishSecond() === $first || $prediction->getFinishSecond() === $third) {
+                    $racePredictionScore += 3;
+                }
+                if ($prediction->getFinishThird() === $first || $prediction->getFinishThird() === $second) {
+                    $racePredictionScore += 3;
+                }
                 $prediction->setRaceScore($racePredictionScore);
                 $em = $this->doctrine->getManager();
-                $em->persist($prediction);
-                $em->flush();
             }
+            $em->flush();
         }
     }
 
@@ -171,12 +176,10 @@ class ScoreCalculator
                 $raceScore = 0;
             }
             $globalEventScore = $qualifyingScore + $raceScore;
-
             $prediction->setTotalScore($globalEventScore);
             $em = $this->doctrine->getManager();
-            $em->persist($prediction);
-            $em->flush();
         }
+        $em->flush();
     }
 
     /**
@@ -187,7 +190,22 @@ class ScoreCalculator
      */
     public function calculateGlobalRankings($event)
     {
-        
+        $predictions = $this->predictionRepository->findBy(['event' => $event]);
+        foreach ($predictions as $prediction ) {
+            $user = $prediction->getUser();
+            $score = $this->scoreRepository->findOneBy(['user' => $user]);
+
+            $qualifyingScore = $score->getQualifyingScore();
+            $raceScore = $score->getRaceScore();
+            $totalScore = $score->getTotal();
+            
+            $score->setLastEvent($prediction->getEvent());
+            $score->setQualifyingScore($qualifyingScore + $prediction->getScore());
+            $score->setRaceScore($raceScore  + $prediction->getRaceScore());
+            $score->setTotal($totalScore + $prediction->getTotalScore());
+            $em = $this->doctrine->getManager();
+        }
+        $em->flush();
     }
 
 }

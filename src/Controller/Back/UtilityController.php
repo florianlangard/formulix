@@ -112,11 +112,9 @@ class UtilityController extends AbstractController
      */
     public function calculateGlobalRanking(ScoreCalculator $scoreCalculator, EventRepository $eventRepository): Response
     {
-        $done = 'calculated';
         $event = $eventRepository->findOneBy(['round' => 5]);
-
-        $scoreCalculator->calculateGlobalEventScore($event);
-        $this->addFlash('success', 'Classement Général');
-        return $this->redirectToRoute('back_utility', ['status' => $done]);
+        $scoreCalculator->calculateGlobalRankings($event);
+        $this->addFlash('success', 'calcul du classement général effectué');
+        return $this->redirectToRoute('back_utility');
     }
 }
