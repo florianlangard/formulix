@@ -44,19 +44,23 @@ class TwitchAuthenticator extends OAuth2Authenticator
             new UserBadge($accessToken->getToken(), function() use ($accessToken, $client) {
                 /** @var TwitchUser $twitchUser */
                 $twitchUser = $client->fetchUserFromToken($accessToken);
-                // dd($twitchUser);
                 $email = $twitchUser->getEmail();
-
                 // 1) have they logged in with Twitch before? Easy!
                 $existingUser = $this->entityManager->getRepository(User::class)->findOneBy(['twitchId' => $twitchUser->getId()]);
-
                 if ($existingUser) {
                     return $existingUser;
                 }
-
                 // 2) do we have a matching user by email?
                 $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
-                // dd($user);
+                if ($user !== null) {
+                    if ($user->getPersonaname() !== $twitchUser->getLogin()) {
+                        $user->setPersonaname($twitchUser->getLogin());
+                    }
+                    if ($user->getTwitchId() !== $twitchUser->getId() || $user->getTwitchId() === null) {
+                        $user->setTwitchId($twitchUser->getId());
+                    }
+                    $this->entityManager->flush();
+                }
                 if ($user === null) {
                     // 3) Maybe you just want to "register" them by creating
                     // a User object
@@ -64,12 +68,10 @@ class TwitchAuthenticator extends OAuth2Authenticator
                     $newUser->setTwitchId($twitchUser->getId());
                     $newUser->setEmail($twitchUser->getEmail());
                     $newUser->setPersonaname($twitchUser->getLogin());
-                    // dd($newUser);
+                    //dd($newUser);
                     $this->entityManager->persist($newUser);
                     $this->entityManager->flush();
-
                 }
-
                 return $user;
             })
         );
