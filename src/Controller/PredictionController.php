@@ -92,7 +92,7 @@ class PredictionController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 // get identified User
                 // $user = $this->getUser();
-                $currentDate = new DateTime();
+                $currentDate = new DateTime('now', new DateTimeZone('UTC'));
                 if ($currentDate > $event->getQualifyingDate()) {
                     return $this->redirectToRoute('home', ['error' => 'Trop tard, ça a déjà commencé!']);
                 }
@@ -100,7 +100,8 @@ class PredictionController extends AbstractController
                 // Relations with prediction 
                 $prediction->setUser($user);
                 $prediction->setEvent($event);
-                $prediction->setCreatedAt(new DateTime('now', new DateTimeZone('UTC')));
+                $prediction->setCreatedAt($currentDate);
+                $prediction->setUpdatedAt($currentDate);
 
                 $pole = $form->get('pole')->getData();
                 $prediction->setPole($pole);
@@ -187,7 +188,7 @@ class PredictionController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 // get identified User
                 // $user = $this->getUser();
-                $currentDate = new DateTime();
+                $currentDate = new DateTime('now', new DateTimeZone('UTC'));
                 if ($currentDate > $event->getQualifyingDate()) {
                     return $this->redirectToRoute('home', ['error' => 'Trop tard, ça a déjà commencé!']);
                 }
@@ -195,7 +196,8 @@ class PredictionController extends AbstractController
                 // Relations with prediction 
                 $prediction->setUser($user);
                 $prediction->setEvent($event);
-                $prediction->setRaceCreatedAt(new DateTime('now', new DateTimeZone('UTC')));
+                $prediction->setRaceCreatedAt($currentDate);
+                $prediction->setRaceUpdatedAt($currentDate);
 
                 $prediction->setFinishFirst($form->get('finishFirst')->getData());
                 $prediction->setFinishSecond($form->get('finishSecond')->getData());

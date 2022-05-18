@@ -10,6 +10,7 @@ use App\Repository\DriverRepository;
 use App\Service\FOneApi;
 use App\Service\ScoreCalculator;
 use App\Repository\EventRepository;
+use App\Repository\PodiumRepository;
 use App\Repository\ScoreRepository;
 use App\Repository\PredictionRepository;
 use DateTimeZone;
@@ -38,9 +39,10 @@ class MainController extends AbstractController
         PredictionRepository $predictionRepository,
         DriverRepository $driverRepository,
         SluggerInterface $slugger,
+        PodiumRepository $podiumRepository,
         ScoreCalculator $scoreCalculator): Response
     {
-            $date = new DateTime();
+            $date = new DateTime('now', new DateTimeZone('UTC'));
 
             $nextEvent = $eventRepository->findNextEvent($date);
             $lastEvent = $eventRepository->findLastEvent($date);

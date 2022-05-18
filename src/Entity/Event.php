@@ -84,6 +84,11 @@ class Event
      */
     private $slug;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Podium::class, mappedBy="event", cascade={"persist", "remove"})
+     */
+    private $podium;
+
     public function __construct()
     {
         $this->predictions = new ArrayCollection();
@@ -288,6 +293,23 @@ class Event
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getPodium(): ?Podium
+    {
+        return $this->podium;
+    }
+
+    public function setPodium(Podium $podium): self
+    {
+        // set the owning side of the relation if necessary
+        if ($podium->getEvent() !== $this) {
+            $podium->setEvent($this);
+        }
+
+        $this->podium = $podium;
 
         return $this;
     }
