@@ -5,11 +5,16 @@
 {% block header %}
 	<header class="header">
 		<div class="header-container">
-			<h1 class="main-title">Tableau de Bord</h1>
-			<p>Retrouvez ici toutes les infos utiles.</p>
-			<p id="current-date">
-				{{date|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY")}}
-			</p>
+			<div class="header-main">
+				<h1 class="main-title">Tableau de Bord</h1>
+				<p>Retrouvez ici toutes les infos utiles.</p>
+				<p id="current-date">
+					{{date|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY")}}
+				</p>
+			</div>
+			{# <div class="header-info">
+				{% include "_user_info_card.html.twig" %}
+			</div> #}
 		</div>
 		
 	</header>
@@ -17,48 +22,21 @@
 {% block body %}
 
 	<div class="body-container">
-		<div class="left-side">
-			{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-				<div class="card card-user">
-					<h3>Hello
-						{{ app.user.personaname }}
-						!</h3>
-					{% if predictionCount == 0 %}
-					<p>Pas encore de prono placé</p>
-					{% else %}
-					<p>nombre de pronos placés :
-						{{ predictionCount }}
-					</p>
-					{% endif %}
-					{% if total %}
-						<p>Classement général :
-							{{ total[0].total is empty ? '0' : total[0].total }}
-							pts</p>
-					{% endif %}
-				</div>
-			{% else %}
-				<div class="card card-user">
-					<h3>Vos Stats</h3>
-					<p>
-						<a href="{{path('app_login')}}">Connectez-vous
-						</a>pour placer vos pronostics et avoir ici un résumé de vos performances.</p>
-					<p>Pas encore inscrit et pas de compte Twitch?
-						<a href="{{path('user_new')}}">Créer un compte.</a>
-					</p>
-				</div>
-			{% endif %}
-			{% if nextEvent is empty %}
-				<div class="card event event-next">
-					<h3>A venir :</h3>
-					<p>La saison est terminée !</p>
-				</div>
-			{% else %}
-				<div class="card event event-container">
-					<div class="card event event-next">
-						<div class="info-container">
-							<h3>Prochaine course :</h3>
-							<div class="card-header">
-								{# <div class="main"> #}
+		<div class="top-container">
+			<div class="left-side">
+				{% if nextEvent is empty %}
+					<div class="cards-container">
+						<div class="card event event-next">
+							<h3>A venir :</h3>
+							<p>La saison est terminée, bientôt la suivante!</p>
+						</div>
+					</div>
+				{% else %}
+					<div class="cards-container">
+						<div class="card event event-next">
+							<div class="info-container">
+								<h3>Prochaine course :</h3>
+								<div class="card-header">
 									<div class="flag">
 										<span class="fi fi-{{ nextEvent[0].countryCode }}"></span>
 									</div>
@@ -66,264 +44,283 @@
 										<h3>{{ nextEvent[0].country }}</h3>
 										<h3>{{ nextEvent[0].name }}</h3>
 									</div>
-								{# </div> #}
-							</div>
-							<p>Manche n°
-								{{ nextEvent[0].round }} - {{ nextEvent[0].locality }}
-							</p>
-							<p>Qualification :
-								{{ nextEvent[0].qualifyingDate|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
-								à 
-								{{ nextEvent[0].qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
-								({{ nextEvent[0].qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC)
-							</p>
-							<p>Course:
-								{{ nextEvent[0].date|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
-								à
-								{{ nextEvent[0].date|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
-								({{ nextEvent[0].date|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC)
-								</p>
-							{% if totalCount != 0 %}
-								<p>Déjà
-									{{ totalCount }}
-									prono(s) placé(s)</p>
-							{% else %}
-								<p>Pas encore de pronos placés</p>
-							{% endif %}
-						</div>
-						<div class="button-container">
-							<a href="{{ path('prediction_add', {slug: nextEvent[0].slug}) }}">
-								<button class="btn btn-submit">Qualifs</button>
-							</a>
-							<a href="{{ path('race_prediction_add', {slug: nextEvent[0].slug}) }}">
-								<button class="btn btn-submit">Course</button>
-							</a>
-						</div>
-					</div>
-					{% if nextEvent[1] is defined %}
-						<div class="card event event-next">
-							<div class="info-container">
-								<h3>A venir :</h3>
-								<div class="card-header">
-									<div class="flag">
-										<span class="fi fi-{{ nextEvent[1].countryCode }}"></span>
-									</div>
-									<div class="title">
-										<h3>{{ nextEvent[1].country }}</h3>
-									<h3>{{ nextEvent[1].name }}</h3>
-									</div>
 								</div>
 								<p>Manche n°
-									{{ nextEvent[1].round }} - {{ nextEvent[1].locality }}</p>
-								<p>Qualification :
-									{{ nextEvent[1].qualifyingDate|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
+									{{ nextEvent[0].round }} - {{ nextEvent[0].locality }}
+								</p>
+								<p><span class="bold">Qualifications : </span>
+									{{ nextEvent[0].qualifyingDate|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
 									à 
-									{{ nextEvent[1].qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
-									({{ nextEvent[1].qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC)
+									{{ nextEvent[0].qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
+									{# ({{ nextEvent[0].qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC) #}
 								</p>
-								<p>Course:
-									{{ nextEvent[1].date|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
+								<p><span class="bold">Course: </span>
+									{{ nextEvent[0].date|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
 									à
-									{{ nextEvent[1].date|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
-									({{ nextEvent[1].date|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC)
-								</p>
-								{% if totalCountNext != 0 %}
+									{{ nextEvent[0].date|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
+									{# ({{ nextEvent[0].date|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC) #}
+									</p>
+								{% if totalCount != 0 %}
 									<p>Déjà
-										{{ totalCountNext }}
+										{{ totalCount }}
 										prono(s) placé(s)</p>
 								{% else %}
 									<p>Pas encore de pronos placés</p>
 								{% endif %}
 							</div>
 							<div class="button-container">
-								<a href="{{ path('prediction_add', {slug: nextEvent[1].slug}) }}">
-									<button class="btn btn-submit">Qualifs</button>
+								<a href="{{ path('prediction_add', {slug: nextEvent[0].slug}) }}">
+									<button class="btn btn-submit">
+										{# <img class="icon" src="{{asset('assets/stopwatch-solid.svg')}}" alt=""> #}
+											Qualifs
+									</button>
 								</a>
-								<a href="{{ path('race_prediction_add', {slug: nextEvent[1].slug}) }}">
+								<a href="{{ path('race_prediction_add', {slug: nextEvent[0].slug}) }}">
 									<button class="btn btn-submit">Course</button>
 								</a>
 							</div>
 						</div>
-					{% endif %}
-				</div>
-			{% endif %}
-			{% if lastEvent is empty %}
-				<div class="card event event-last">
-					<h3>Course précedente : </h3>
-					<p>La saison n'a pas encore commencé...</p>
-				</div>
-			{% else %}
-			{# <div class="card event event-container"> #}
-				<div class="card event event-last">
-					<div class="card-title">
-						<h3>Course précedente : </h3>
-					</div>
-					<div class="card-content">
-						<div class="info-container">
-							<div class="card-header">
-								<div class="flag">
-									<span class="fi fi-{{ lastEvent[0].countryCode }}"></span>
+						{% if nextEvent[1] is defined %}
+							<div class="card event event-next">
+								<div class="info-container">
+									<h3>A venir :</h3>
+									<div class="card-header">
+										<div class="flag">
+											<span class="fi fi-{{ nextEvent[1].countryCode }}"></span>
+										</div>
+										<div class="title">
+											<h3>{{ nextEvent[1].country }}</h3>
+										<h3>{{ nextEvent[1].name }}</h3>
+										</div>
+									</div>
+									<p>Manche n°
+										{{ nextEvent[1].round }} - {{ nextEvent[1].locality }}</p>
+									<p><span class="bold">Qualifications : </span>
+										{{ nextEvent[1].qualifyingDate|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
+										à 
+										{{ nextEvent[1].qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
+										{# ({{ nextEvent[1].qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC) #}
+									</p>
+									<p><span class="bold">Course: </span>
+										{{ nextEvent[1].date|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
+										à
+										{{ nextEvent[1].date|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
+										{# ({{ nextEvent[1].date|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC) #}
+									</p>
+									{% if totalCountNext != 0 %}
+										<p>Déjà
+											{{ totalCountNext }}
+											prono(s) placé(s)</p>
+									{% else %}
+										<p>Pas encore de pronos placés</p>
+									{% endif %}
 								</div>
-								<div class="title">
-									<h3>{{ lastEvent[0].country }}</h3>
-									<h3>{{ lastEvent[0].name }}</h3>
+								<div class="button-container">
+									<a href="{{ path('prediction_add', {slug: nextEvent[1].slug}) }}">
+										<button class="btn btn-submit">Qualifs</button>
+									</a>
+									<a href="{{ path('race_prediction_add', {slug: nextEvent[1].slug}) }}">
+										<button class="btn btn-submit">Course</button>
+									</a>
 								</div>
 							</div>
-							<p>Manche n°
-								{{ lastEvent[0].round }} - {{ lastEvent[0].locality }}</p>
-							{# <p>{{ lastEvent[0].date|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY") }}
-								à
-								{{ lastEvent[0].date|date('H:i') }}
-								UTC</p> #}
-								<p>Qualification :
-									{{ lastEvent[0].qualifyingDate|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
-									à 
-									{{ lastEvent[0].qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
-									({{ lastEvent[0].qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC)
-								</p>
-								<p>Course:
-									{{ lastEvent[0].date|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
-									à
-									{{ lastEvent[0].date|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
-									({{ lastEvent[0].date|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC)
-								</p>
-							{% if lastEvent[0].result is not null %}
-								<div class="quali-container">
-									<h4>Qualifications :</h4>
-									<p>Pole :
-										{{ lastEvent[0].result.pole.fullname }}</p>
-									<p>chrono :
-										{{ lastEvent[0].result.time }}</p>
+						{% endif %}
+					</div>
+				{% endif %}
+				{% if lastEvent is empty %}
+					<div class="card event event-last">
+						<h3>Course précédente : </h3>
+						<p>La saison n'a pas encore commencé...</p>
+					</div>
+				{% else %}
+					<div class="card event event-last">
+						<div class="card-title">
+							<h3>Course précédente : </h3>
+						</div>
+						<div class="card-header">
+							<div class="flag">
+								<span class="fi fi-{{ lastEvent[0].countryCode }}"></span>
+							</div>
+							<div class="title">
+								<h3>{{ lastEvent[0].country }}</h3>
+								<h3>{{ lastEvent[0].name }}</h3>
+							</div>
+						</div>
+						<div class="card-content">
+							<div class="info-container">
+								<h4>Résultats :</h4>
+								<p>Manche n°
+									{{ lastEvent[0].round }} - {{ lastEvent[0].locality }}</p>								
+									<p><span class="bold">Qualifications : </span>
+										{{ lastEvent[0].qualifyingDate|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
+										à 
+										{{ lastEvent[0].qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
+										{# ({{ lastEvent[0].qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC) #}
+									</p>
+									<p><span class="bold">Course: </span>
+										{{ lastEvent[0].date|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
+										à
+										{{ lastEvent[0].date|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
+										{# ({{ lastEvent[0].date|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC) #}
+									</p>
+							</div>
+								{% if lastEvent[0].result is not null %}
+									<div class="quali-container">
+										<h4>Qualifications :</h4>
+										<p>Pole :
+											{{ lastEvent[0].result.pole.fullname }}</p>
+										<p>chrono :
+											{{ lastEvent[0].result.time }}</p>
+									</div>
+								{% else %}
+									<div class="quali-container">
+										<h4>Résultats :</h4>
+										<p>En attente des données...</p>
+									</div>
+								{% endif %}
+								{% if lastEvent[0].result.finishedFirst is not null %}
+								<div class="race-container">
+									<h4>Course :</h4>
+									<p>Vainqueur :
+										{{ lastEvent[0].result.finishedFirst.fullname }}</p>
+									<p>2eme place :
+										{{ lastEvent[0].result.finishedSecond.fullname }}</p>
+									<p>3eme place :
+									{{ lastEvent[0].result.finishedThird.fullname }}</p>
+								</div>
+								{% else %}
+									<div class="race-container">
+										<h4>Course :</h4>
+										<p>En attente des données...</p>
+									</div>
+								{% endif %}
+							{# <div class="podium-container">
+								<h3>Podium des Formulix</h3>
+								<div class="podium">
+									{% if podium is not empty %}
+										<div class="podium-item">
+											<div class="podium-box podium-second">
+												<div class="position position-second">
+													<p>
+														<i class="fas fa-medal"></i>
+													</p>
+													<p>2</p>
+												</div>
+											</div>
+											<p class="podium-user">{{ podium[1] is defined ? podium[1].user.personaname : '...' }}</p>
+											<p class="podium-user">{{ podium[1] is defined ? podium[1].time : '...' }}</p>
+										</div>
+										<div class="podium-item">
+											<div class="podium-box podium-first">
+												<div class="position position-first">
+													<p>
+														<i class="fas fa-trophy"></i>
+													</p>
+													<p>1</p>
+												</div>
+											</div>
+											<p class="podium-user">{{ podium[0] is defined ? podium[0].user.personaname : '...' }}</p>
+											<p class="podium-user">{{ podium[0] is defined ? podium[0].time : '...' }}</p>
+										</div>
+										<div class="podium-item">
+											<div class="podium-box podium-third">
+												<div class="position position-third">
+													<p>
+														<i class="fas fa-medal"></i>
+													</p>
+													<p>3</p>
+												</div>
+											</div>
+											<p class="podium-user">{{ podium[2] is defined ? podium[2].user.personaname : '...' }}</p>
+											<p class="podium-user">{{ podium[2] is defined ? podium[2].time : '...' }}</p>
+										</div>
+									</div>
 								</div>
 							{% else %}
-								<div class="result-container">
-									<h4>Résultats :</h4>
-									<p>Récupération des données en attente...</p>
-								</div>
-							{% endif %}
+								<img class="podium-img" src="{{ asset('assets/Podium.svg') }}" alt="podium">
+							</div>
 						</div>
-						{# {% if lastEvent[0].result is not null %}
-							<div class="quali-container">
-								<h4>Qualifications</h4>
-								<p>Pole :
-									{{ lastEvent[0].result.pole.fullname }}</p>
-								<p>chrono :
-									{{ lastEvent[0].result.time }}</p>
-							</div>
-
-						{% else %}
-							<div class="result-container">
-								<h4>Résultats</h4>
-								<p>Récupération des données en attente</p>
-							</div>
 						{% endif %} #}
-						<div class="podium-container">
-							<h3>Podium des Formulix</h3>
-							<div class="podium">
-								{% if podium is not empty %}
-									<div class="podium-item">
-										<div class="podium-box podium-second">
-											<div class="position position-second">
-												<p>
-													<i class="fas fa-medal"></i>
-												</p>
-												<p>2</p>
-											</div>
-										</div>
-										<p class="podium-user">{{ podium[1] is defined ? podium[1].user.personaname : '...' }}</p>
-										<p class="podium-user">{{ podium[1] is defined ? podium[1].time : '...' }}</p>
-									</div>
-									<div class="podium-item">
-										<div class="podium-box podium-first">
-											<div class="position position-first">
-												<p>
-													<i class="fas fa-trophy"></i>
-												</p>
-												<p>1</p>
-											</div>
-										</div>
-										<p class="podium-user">{{ podium[0] is defined ? podium[0].user.personaname : '...' }}</p>
-										<p class="podium-user">{{ podium[0] is defined ? podium[0].time : '...' }}</p>
-									</div>
-									<div class="podium-item">
-										<div class="podium-box podium-third">
-											<div class="position position-third">
-												<p>
-													<i class="fas fa-medal"></i>
-												</p>
-												<p>3</p>
-											</div>
-										</div>
-										<p class="podium-user">{{ podium[2] is defined ? podium[2].user.personaname : '...' }}</p>
-										<p class="podium-user">{{ podium[2] is defined ? podium[2].time : '...' }}</p>
-									</div>
-
-								</div>
-							{# <div class="podium-user-container">
-							</div> #}
-							</div>
-
-						{% else %}
-							{# <div class="podium-item">
-								<div class="podium-box podium-second">
-									<div class="position position-second">
-										<p>
-											<i class="fas fa-medal"></i>
-										</p>
-										<p>2</p>
-									</div>
-								</div>
-								<p class="podium-user">pseudo second</p>
-							</div>
-							<div class="podium-item">
-								<div class="podium-box podium-first">
-									<div class="position position-first">
-										<p>
-											<i class="fas fa-trophy"></i>
-										</p>
-										<p>1</p>
-									</div>
-								</div>
-								<p class="podium-user">pseudo first</p>
-							</div>
-							<div class="podium-item">
-								<div class="podium-box podium-third">
-									<div class="position position-third">
-										<p>
-											<i class="fas fa-medal"></i>
-										</p>
-										<p>3</p>
-									</div>
-								</div>
-								<p class="podium-user">pseudo third</p>
-							</div> #}
-
-							<img id="podium" src="{{ asset('assets/Podium.svg') }}" alt="podium">
-
-						</div>
 					</div>
-				{# </div> #}
+			</div> {# End left-side div#}
+		{% endif %}
+		</div>
+		<div class="right-side">
+		{% include "_user_info_card.html.twig" %}
+			<div class="rankings">
+				<h3>Classement Général :</h3>
+				{% if topTen is empty %}
+					<p>Pas encore de classement</p>
+				{% else %}
+					<ul class="rankings-topten">
+						{% for user in topTen %}
+							<li class="list-item">
+								<div class="ranking-position">{{loop.index}}</div>
+								<div class="ranking-username">{{user.user.personaname}}</div>
+								<div class="ranking-score">{{user.total is empty ? '0' : user.total}} pts</div>
+							</li>
+						{% endfor %}
+					</ul>
 				{% endif %}
+
 			</div>
 		</div>
-	{% endif %}
+	</div> {#top-container div end#}
+	<div class="bottom-container">
+		<div class="podiums-container">
+			<h3>Podiums de la dernière course :</h3>
+			<div class="card-header">
+				<div class="flag">
+					<span class="fi fi-{{ lastEvent[0].countryCode }}"></span>
+				</div>
+				<div class="title">
+					<h3>{{ lastEvent[0].country }}</h3>
+					<h3>{{ lastEvent[0].name }}</h3>
+				</div>
+			</div>
+			<div class="flex-row-resp-container">
+				<div class="podium-item">
+					<h4>Qualifications :</h4>
+					<img class="podium-img" src="{{ asset('assets/Podium.svg') }}" alt="podium">
+					<div class="podium-users">
+						{% if podium is not null %}
+						{% for item in podium %}
+							<p>{{ loop.index }} - {{ item.user.personaname }} | {{ item.pole.fullname }} | {{ item.time }} | {{ item.score }} pts</p>
+						{% endfor %}
+						{% else %}
+							<p>En attente...</p>
+						{% endif %}
+					</div>
+				</div>
+				<div class="podium-item">
+				<h4>Course :</h4>
+					<img class="podium-img" src="{{ asset('assets/Podium.svg') }}" alt="podium">
+					<div class="podium-users">
+						{% if racePodium is not null %}
+						{% for item in racePodium %}
+							<p>{{ loop.index }} - {{ item.user.personaname }} | {{ item.finishFirst.fullname }} | {{ item.finishSecond.fullname }} | {{ item.finishThird.fullname }} | {{ item.raceScore }} pts</p>
+						{% endfor %}
+						{% else %}
+							<p>En attente...</p>
+						{% endif %}
+					</div>
+				</div>
+				<div class="podium-item">
+					<h4>Général :</h4>
+					<img class="podium-img" src="{{ asset('assets/Podium.svg') }}" alt="podium">
+					<div class="podium-users">
+						{% if globalPodium is not null %}
+						{% for item in globalPodium %}
+							<p>{{ loop.index }} - {{ item.user.personaname }} | {{ item.totalScore }} pts</p>
+						{% endfor %}
+						{% else %}
+							<p>En attente...</p>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div class="rankings">
-		<h3>Classement Général</h3>
-		{% if topTen is empty %}
-			<p>Pas encore de classement</p>
-		{% else %}
-			<ul class="rankings-topten">
-				{% for user in topTen %}
-					<li class="list-item">
-						<div class="ranking-position">{{loop.index}}</div>
-						<div class="ranking-username">{{user.user.personaname}}</div>
-						<div class="ranking-score">{{user.total is empty ? '0' : user.total}} pts</div>
-					</li>
-				{% endfor %}
-			</ul>
-		{% endif %}
-
 	</div>
-</div>
-{% endblock %}{# <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!-- Font Awesome Pro 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) --><path d="M504 352H136.4c-4.4 0-8 3.6-8 8l-.1 48c0 4.4 3.6 8 8 8H504c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8zm0 96H136.1c-4.4 0-8 3.6-8 8l-.1 48c0 4.4 3.6 8 8 8h368c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8zm0-192H136.6c-4.4 0-8 3.6-8 8l-.1 48c0 4.4 3.6 8 8 8H504c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8zm106.5-139L338.4 3.7a48.15 48.15 0 0 0-36.9 0L29.5 117C11.7 124.5 0 141.9 0 161.3V504c0 4.4 3.6 8 8 8h80c4.4 0 8-3.6 8-8V256c0-17.6 14.6-32 32.6-32h382.8c18 0 32.6 14.4 32.6 32v248c0 4.4 3.6 8 8 8h80c4.4 0 8-3.6 8-8V161.3c0-19.4-11.7-36.8-29.5-44.3z"/></svg> #}
+{% endblock %}
+{# <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!-- Font Awesome Pro 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) --><path d="M504 352H136.4c-4.4 0-8 3.6-8 8l-.1 48c0 4.4 3.6 8 8 8H504c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8zm0 96H136.1c-4.4 0-8 3.6-8 8l-.1 48c0 4.4 3.6 8 8 8h368c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8zm0-192H136.6c-4.4 0-8 3.6-8 8l-.1 48c0 4.4 3.6 8 8 8H504c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8zm106.5-139L338.4 3.7a48.15 48.15 0 0 0-36.9 0L29.5 117C11.7 124.5 0 141.9 0 161.3V504c0 4.4 3.6 8 8 8h80c4.4 0 8-3.6 8-8V256c0-17.6 14.6-32 32.6-32h382.8c18 0 32.6 14.4 32.6 32v248c0 4.4 3.6 8 8 8h80c4.4 0 8-3.6 8-8V161.3c0-19.4-11.7-36.8-29.5-44.3z"/></svg> #}

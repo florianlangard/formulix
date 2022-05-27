@@ -73,7 +73,7 @@ class PopulateCommand extends Command
             $prediction->setUser($u);
             $pole = $this->driverRepository->findOneBy(['id' => rand(43,63)]);
             $prediction->setPole($pole);
-            $prediction->setTime('1:'.rand(25, 35).'.'.rand(000,999));
+            $prediction->setTime('1:'.rand(25, 35).'.'.random_int(000,999));
 
             $first = $this->driverRepository->findOneBy(['id' => rand(43,63)]);
             $prediction->setFinishFirst($first);

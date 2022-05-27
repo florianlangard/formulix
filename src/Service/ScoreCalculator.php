@@ -102,10 +102,10 @@ class ScoreCalculator
                         $predictionScore += 1;
                 }
                 $prediction->setScore($predictionScore);
-                $em = $this->doctrine->getManager();
             }
-            $em->flush();
         }
+        $em = $this->doctrine->getManager();
+        $em->flush();
     }
 
     /**
@@ -149,10 +149,10 @@ class ScoreCalculator
                     $racePredictionScore += 3;
                 }
                 $prediction->setRaceScore($racePredictionScore);
-                $em = $this->doctrine->getManager();
             }
-            $em->flush();
         }
+        $em = $this->doctrine->getManager();
+        $em->flush();
     }
 
     /**
@@ -177,8 +177,8 @@ class ScoreCalculator
             }
             $globalEventScore = $qualifyingScore + $raceScore;
             $prediction->setTotalScore($globalEventScore);
-            $em = $this->doctrine->getManager();
         }
+        $em = $this->doctrine->getManager();
         $em->flush();
     }
 
@@ -203,8 +203,8 @@ class ScoreCalculator
             $score->setQualifyingScore($qualifyingScore + $prediction->getScore());
             $score->setRaceScore($raceScore  + $prediction->getRaceScore());
             $score->setTotal($totalScore + $prediction->getTotalScore());
-            $em = $this->doctrine->getManager();
         }
+        $em = $this->doctrine->getManager();
         $em->flush();
     }
 

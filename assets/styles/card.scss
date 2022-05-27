@@ -2,12 +2,12 @@
 
 .card {
     background-color: vars.$lightGrey;
-    padding: 10px;
-    margin: 10px;
-    border-radius: 0.2em;
+    padding: 8px;
+    margin: 8px;
+    border-radius: 4px;
     border: 1px solid grey;
     box-shadow: 0 0 5px black;
-    min-width: 300px;
+    min-width: 330px;
 
     &.event {
         &.event-next {
@@ -69,6 +69,14 @@ span.fi {
 
 .card.event.event-container {
     background-color: vars.$darkGrey;
+    width: auto;
+    margin: auto;
+    margin-top: 8px;
+}
+
+.card.event-podium {
+    display: flex;
+    
 }
 
 @media screen and (max-width: 600px) {

@@ -1,0 +1,30 @@
+@use './vars';
+
+.flex-row-resp-container {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.flex-col-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.body-container {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: auto;
+}
+
+span.bold {
+    font-weight: bold;
+}
+
+@media screen and (max-width: 600px){
+    .flex-row-resp-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}

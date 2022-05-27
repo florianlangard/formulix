@@ -10,6 +10,7 @@ use App\Repository\DriverRepository;
 use App\Service\FOneApi;
 use App\Service\ScoreCalculator;
 use App\Repository\EventRepository;
+use App\Repository\PodiumRepository;
 use App\Repository\ScoreRepository;
 use App\Repository\PredictionRepository;
 use DateTimeZone;
@@ -38,13 +39,16 @@ class MainController extends AbstractController
         PredictionRepository $predictionRepository,
         DriverRepository $driverRepository,
         SluggerInterface $slugger,
+        PodiumRepository $podiumRepository,
         ScoreCalculator $scoreCalculator): Response
     {
-            $date = new DateTime();
+            $date = new DateTime('now', new DateTimeZone('UTC'));
 
             $nextEvent = $eventRepository->findNextEvent($date);
             $lastEvent = $eventRepository->findLastEvent($date);
             $topTen = $scoreRepository->findTopTen();
+            $eventPodium = $podiumRepository->findOneBy(['event' => $lastEvent]);
+            
 
             $total = $scoreRepository->findBy(['user' => $this->getUser(), 'season' => 2022]);
             $count = $predictionRepository->getUserPredictionCount($this->getUser());
@@ -60,7 +64,9 @@ class MainController extends AbstractController
             }
 
             if ($lastEvent) {
-                $lastEventPodium = $predictionRepository->findPodium($lastEvent[0]->getId());
+                $lastEventPodium = $predictionRepository->findPodium($lastEvent[0]);
+                $lastEventRacePodium = $predictionRepository->findRacePodium($lastEvent[0]);
+                $lastEventGlobalPodium = $predictionRepository->findGlobalPodium($lastEvent[0]);
 
                 if ($lastEventPodium === null) {
                     return $lastEventPodium;
@@ -69,7 +75,7 @@ class MainController extends AbstractController
             else {
                 $lastEventPodium = null;
             }
-            
+            // dd($lastEventRacePodium);
             return $this->render('main/index.html.twig',[
                 'nextEvent' => $nextEvent, 
                 'lastEvent' => $lastEvent, 
@@ -80,6 +86,8 @@ class MainController extends AbstractController
                 'date' => $date,
                 'totalCount' => $totalCount,
                 'totalCountNext' => $totalCountNext,
+                'racePodium' => $lastEventRacePodium,
+                'globalPodium' => $lastEventGlobalPodium
             ]);
     }
 }

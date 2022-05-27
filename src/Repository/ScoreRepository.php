@@ -19,9 +19,9 @@ class ScoreRepository extends ServiceEntityRepository
         parent::__construct($registry, Score::class);
     }
 
-    // /**
-    //  * @return Score[] Returns an array of Score objects
-    //  */
+    /**
+     * @return Score[] Returns an array of Score objects
+     */
     
     public function findTopTen()
     {
@@ -29,12 +29,19 @@ class ScoreRepository extends ServiceEntityRepository
             // ->andWhere('s.exampleField = :val')
             // ->setParameter('val', $value)
             ->orderBy('s.total', 'DESC')
-            ->setMaxResults(15)
+            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
 
+    /**
+     * Returns count of active users in the ranking table for the current season.
+     * Considered active if placed at least one prediction.
+     *
+     * @param string|int $season
+     * @return string Number of users in ranking
+     */
     public function getUsersCount($season)
     {
         return $this->createQueryBuilder('s')
