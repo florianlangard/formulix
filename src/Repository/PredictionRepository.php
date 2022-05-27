@@ -19,9 +19,9 @@ class PredictionRepository extends ServiceEntityRepository
         parent::__construct($registry, Prediction::class);
     }
 
-    // /**
-    //  * @return Prediction[] Returns an array of Prediction objects
-    //  */
+    /**
+     * @return Prediction[] Returns an array of Prediction objects
+     */
     
     public function findPodium($eventId)
     {
@@ -30,6 +30,42 @@ class PredictionRepository extends ServiceEntityRepository
             ->andWhere('p.score != :null')->setParameter('null', serialize(null))
             ->setParameter('val', $eventId)
             ->orderBy('p.score', 'DESC')
+            ->addOrderBy('p.updated_at', 'ASC')
+            ->addOrderBy('p.created_at', 'ASC')
+            ->setMaxResults(3)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return Prediction[] Returns an array of Prediction objects
+     */
+    public function findRacePodium($eventId)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.event = :val')
+            ->andWhere('p.raceScore != :null')->setParameter('null', serialize(null))
+            ->setParameter('val', $eventId)
+            ->orderBy('p.raceScore', 'DESC')
+            ->addOrderBy('p.updated_at', 'ASC')
+            ->addOrderBy('p.created_at', 'ASC')
+            ->setMaxResults(3)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return Prediction[] Returns an array of Prediction objects
+     */
+    public function findGlobalPodium($eventId)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.event = :val')
+            ->andWhere('p.totalScore != :null')->setParameter('null', serialize(null))
+            ->setParameter('val', $eventId)
+            ->orderBy('p.totalScore', 'DESC')
             ->addOrderBy('p.updated_at', 'ASC')
             ->addOrderBy('p.created_at', 'ASC')
             ->setMaxResults(3)

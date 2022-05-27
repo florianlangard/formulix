@@ -83,7 +83,7 @@ class UtilityController extends AbstractController
     {
         
         $done = 'calculated';
-        $event = $eventRepository->findOneBy(['round' => 5]);
+        $event = $eventRepository->findOneBy(['round' => 6]); //! Hardcode
 
         $calculateQualifyingScore = $scoreCalculator->calculateQualifyingScore($event);
         if ($calculateQualifyingScore === false) {
@@ -112,7 +112,7 @@ class UtilityController extends AbstractController
      */
     public function calculateGlobalRanking(ScoreCalculator $scoreCalculator, EventRepository $eventRepository): Response
     {
-        $event = $eventRepository->findOneBy(['round' => 5]);
+        $event = $eventRepository->findOneBy(['round' => 6]); //! Hardcode
         $scoreCalculator->calculateGlobalRankings($event);
         $this->addFlash('success', 'calcul du classement général effectué');
         return $this->redirectToRoute('back_utility');

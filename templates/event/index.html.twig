@@ -10,11 +10,16 @@
 {% block header %}
 	<header class="header">
 		<div class="header-container">
-			<h1 class="main-title">Calendrier 2022</h1>
-			<p>Retrouvez ici toutes les courses de la saison.</p>
-			<p id="current-date">
-				{{date|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY")}}
-			</p>
+			<div class="header-main">
+				<h1 class="main-title">Calendrier 2022</h1>
+				<p>Retrouvez ici toutes les courses de la saison.</p>
+				<p id="current-date">
+					{{date|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY")}}
+				</p>
+			</div>
+			<div class="header-info">
+				{# {% include "_user_info_card.html.twig" %} #}
+			</div>
 		</div>
 	</header>
 {% endblock %}

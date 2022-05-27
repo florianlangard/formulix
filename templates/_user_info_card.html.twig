@@ -1,0 +1,29 @@
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <div class="card card-user">
+        <h3>Hello,
+            {{ app.user.personaname }}
+            !</h3>
+        {% if predictionCount == 0 %}
+        <p>Pas encore de prono placé</p>
+        {% else %}
+        <p>nombre de pronos placés :
+            {{ predictionCount }}
+        </p>
+        {% endif %}
+        {% if total %}
+            <p>Classement général :
+                {{ total[0].total is empty ? '0' : total[0].total }}
+                pts</p>
+        {% endif %}
+    </div>
+    {% else %}
+    <div class="card card-user">
+        <h3>Vos Stats</h3>
+        <p>
+            <a href="{{path('app_login')}}">Connectez-vous
+            </a>pour placer vos pronostics et avoir ici un résumé de vos performances.</p>
+        <p>Pas encore inscrit et pas de compte Twitch?
+            <a href="{{path('user_new')}}">Créer un compte.</a>
+        </p>
+    </div>
+{% endif %}

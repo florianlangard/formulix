@@ -20,7 +20,7 @@ ul {
 }
 
 .header {
-    height: 150px;
+    min-height: 160px;
     background-color: vars.$lightGrey;
     margin-top: 80px;
     & p {
@@ -30,9 +30,22 @@ ul {
 
 .header-container {
     width: 90%;
+    min-height: 160px;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    // flex-direction: column;
     margin: auto;
+}
+
+.main-title {
+    margin-top: 0;
+}
+
+.header-info {
+    width: 50%;
+    justify-content: center;
+    align-items: flex-end;
 }
 
 .event-container {
@@ -40,26 +53,35 @@ ul {
     flex-direction: row;
 }
 
-.footer {
-    background-color: red;
-    margin-bottom: 0;
-    height: 40px;
-}
-
-.fa-warehouse {
-    color: vars.$lightGrey;
-}
-
-.body-container {
+.top-container {
     display: flex;
-    flex-direction: row;
-    width: 90%;
-    justify-content: space-evenly;
-    margin: auto;
+
+}
+
+.bottom-container {
+    margin: 8px;
+}
+
+.cards-container {
+    display: flex;
+    background-color: vars.$darkGrey;
+    border-radius: 4px;
+}
+
+.quali-container {
+    text-align: start;
+}
+
+.race-container {
+    text-align: start;
 }
 
 .left-side {
     width: 65%;
+}
+
+.right-side {
+    width: 35%;
 }
 
 .events {
@@ -105,8 +127,20 @@ select {
     margin-bottom: 10px;
 }
 
+.icon {
+    height: 24px;
+    width: 24px;
+}
+
 .notyf-message {
     display: none;
+}
+
+@media screen and (max-width: 1250px) {
+    .cards-container {
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 @media screen and (max-width: 600px) {
@@ -118,6 +152,12 @@ select {
         margin: auto;
     }
 
+    .top-container {
+        flex-direction: column;
+    }
+
+    
+
     .left-side, .right-side {
         width: 95%;
     }
@@ -126,5 +166,19 @@ select {
         display: flex;
         flex-direction: column;
 
+    }
+
+    .header-container {
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .main-title {
+        margin-top: 8px;
+    }
+
+    .cards-container {
+        margin-top: 8px;
     }
 }
