@@ -31,7 +31,7 @@ class UtilityController extends AbstractController
         $toCalculateRanking = true;
 
         $lastEvent = $eventRepository->findLastEvent(new DateTime('now', new DateTimeZone('UTC')));
-        $lastResult = $resultRepository->findOneBy([], ['updatedAt' => 'DESC']);
+        $lastResult = $resultRepository->findOneBy([], ['id' => 'DESC']);
         // dd($lastResult);
         
         $checkPredictions = $predictionRepository->findOneBy(['event' => $lastResult->getEvent()]);
@@ -68,9 +68,10 @@ class UtilityController extends AbstractController
     public function getLastResult(EventRepository $eventRepository, ResultRepository $resultRepository, FOneApi $fOneApi, DataImporter $dataImporter): Response
     {
         $done = 'fetched';
-        // $lastEvent = $eventRepository->findLastEvent(new DateTime());
-        // dd($lastEvent);
-        // $data = $fOneApi->fetchQualifyingResults($lastEvent[0]->getSeason(), $lastEvent[0]->getRound());
+        $lastEvent = $eventRepository->findLastEvent(new DateTime('now', new DateTimeZone('UTC')));
+        // $qualifyingData = $fOneApi->fetchQualifyingResults($lastEvent[0]->getSeason(), $lastEvent[0]->getRound());
+        $result = $resultRepository->findOneBy(['event' => $lastEvent[0]]);
+        dd($result);
         // $test = $dataImporter->ImportSeasonDrivers('2022');
         // dd($test);
         return $this->redirectToRoute('back_utility', ['status' => $done]);
@@ -83,7 +84,7 @@ class UtilityController extends AbstractController
     {
         
         $done = 'calculated';
-        $event = $eventRepository->findOneBy(['round' => 6]); //! Hardcode
+        $event = $eventRepository->findOneBy(['round' => 7]); //! Hardcode
 
         $calculateQualifyingScore = $scoreCalculator->calculateQualifyingScore($event);
         if ($calculateQualifyingScore === false) {
@@ -112,7 +113,7 @@ class UtilityController extends AbstractController
      */
     public function calculateGlobalRanking(ScoreCalculator $scoreCalculator, EventRepository $eventRepository): Response
     {
-        $event = $eventRepository->findOneBy(['round' => 6]); //! Hardcode
+        $event = $eventRepository->findOneBy(['round' => 7]); //! Hardcode
         $scoreCalculator->calculateGlobalRankings($event);
         $this->addFlash('success', 'calcul du classement général effectué');
         return $this->redirectToRoute('back_utility');

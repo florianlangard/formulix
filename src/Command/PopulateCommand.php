@@ -91,11 +91,12 @@ class PopulateCommand extends Command
 
             $this->em->persist($prediction);
 
-            $score = new Score();
-            $score->setUser($u);
-            $score->setSeason('2022');
-
-            $this->em->persist($score);
+            if ($this->scoreRepository->findOneBy(['user' => $u]) === null) {
+                $score = new Score();
+                $score->setUser($u);
+                $score->setSeason('2022');
+                $this->em->persist($score);
+            }
 
             $this->em->flush();
 

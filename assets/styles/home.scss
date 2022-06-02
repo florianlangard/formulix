@@ -77,11 +77,17 @@ ul {
 }
 
 .left-side {
+    display: flex;
+    flex-direction: column;
     width: 65%;
+    height: 100%;
+    flex-grow: 1;
 }
 
 .right-side {
     width: 35%;
+    height: 100%;
+    flex-grow: 1;
 }
 
 .events {

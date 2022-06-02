@@ -174,11 +174,11 @@
 									</div>
 								{% else %}
 									<div class="quali-container">
-										<h4>Résultats :</h4>
+										<h4>Qualifications :</h4>
 										<p>En attente des données...</p>
 									</div>
 								{% endif %}
-								{% if lastEvent[0].result.finishedFirst is not null %}
+								{% if lastEvent[0].result.finishedFirst is defined %}
 								<div class="race-container">
 									<h4>Course :</h4>
 									<p>Vainqueur :
@@ -194,53 +194,6 @@
 										<p>En attente des données...</p>
 									</div>
 								{% endif %}
-							{# <div class="podium-container">
-								<h3>Podium des Formulix</h3>
-								<div class="podium">
-									{% if podium is not empty %}
-										<div class="podium-item">
-											<div class="podium-box podium-second">
-												<div class="position position-second">
-													<p>
-														<i class="fas fa-medal"></i>
-													</p>
-													<p>2</p>
-												</div>
-											</div>
-											<p class="podium-user">{{ podium[1] is defined ? podium[1].user.personaname : '...' }}</p>
-											<p class="podium-user">{{ podium[1] is defined ? podium[1].time : '...' }}</p>
-										</div>
-										<div class="podium-item">
-											<div class="podium-box podium-first">
-												<div class="position position-first">
-													<p>
-														<i class="fas fa-trophy"></i>
-													</p>
-													<p>1</p>
-												</div>
-											</div>
-											<p class="podium-user">{{ podium[0] is defined ? podium[0].user.personaname : '...' }}</p>
-											<p class="podium-user">{{ podium[0] is defined ? podium[0].time : '...' }}</p>
-										</div>
-										<div class="podium-item">
-											<div class="podium-box podium-third">
-												<div class="position position-third">
-													<p>
-														<i class="fas fa-medal"></i>
-													</p>
-													<p>3</p>
-												</div>
-											</div>
-											<p class="podium-user">{{ podium[2] is defined ? podium[2].user.personaname : '...' }}</p>
-											<p class="podium-user">{{ podium[2] is defined ? podium[2].time : '...' }}</p>
-										</div>
-									</div>
-								</div>
-							{% else %}
-								<img class="podium-img" src="{{ asset('assets/Podium.svg') }}" alt="podium">
-							</div>
-						</div>
-						{% endif %} #}
 					</div>
 			</div> {# End left-side div#}
 		{% endif %}
@@ -283,7 +236,7 @@
 					<h4>Qualifications :</h4>
 					<img class="podium-img" src="{{ asset('assets/Podium.svg') }}" alt="podium">
 					<div class="podium-users">
-						{% if podium is not null %}
+						{% if podium is not empty %}
 						{% for item in podium %}
 							<p>{{ loop.index }} - {{ item.user.personaname }} | {{ item.pole.fullname }} | {{ item.time }} | {{ item.score }} pts</p>
 						{% endfor %}
@@ -296,7 +249,7 @@
 				<h4>Course :</h4>
 					<img class="podium-img" src="{{ asset('assets/Podium.svg') }}" alt="podium">
 					<div class="podium-users">
-						{% if racePodium is not null %}
+						{% if racePodium is not empty %}
 						{% for item in racePodium %}
 							<p>{{ loop.index }} - {{ item.user.personaname }} | {{ item.finishFirst.fullname }} | {{ item.finishSecond.fullname }} | {{ item.finishThird.fullname }} | {{ item.raceScore }} pts</p>
 						{% endfor %}
@@ -309,7 +262,7 @@
 					<h4>Général :</h4>
 					<img class="podium-img" src="{{ asset('assets/Podium.svg') }}" alt="podium">
 					<div class="podium-users">
-						{% if globalPodium is not null %}
+						{% if globalPodium is not empty %}
 						{% for item in globalPodium %}
 							<p>{{ loop.index }} - {{ item.user.personaname }} | {{ item.totalScore }} pts</p>
 						{% endfor %}

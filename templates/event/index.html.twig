@@ -49,15 +49,15 @@
 						<p>
 							{{ event.qualifyingDate|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
 							à 
-							{{ event.qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)</br>
-							( {{ event.qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC )
+							{{ event.qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
+							({{ event.qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC)
 							</p>
 						<p>Course:</p>
 						<p>
 							{{ event.date|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
 							à 
-							{{ event.date|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)</br>
-							( {{ event.date|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC )
+							{{ event.date|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
+							({{ event.date|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC)
 						</p>
 
 					</div>

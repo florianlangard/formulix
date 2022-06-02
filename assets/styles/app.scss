@@ -1,8 +1,13 @@
 @use './vars';
 
+@font-face {
+    font-family: 'Titillium';
+    src: url('/public/assets/fonts/TitilliumWeb/TitilliumWeb-Regular.ttf') format('truetype');
+}
+
 body {
     background-color: vars.$altDarkGrey;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Titillium', 'Roboto', sans-serif;
     height: 100vh;
-    margin: auto;
+    margin: 0;
 }

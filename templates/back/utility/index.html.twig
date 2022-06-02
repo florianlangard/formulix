@@ -6,83 +6,119 @@
 
 <div class="body-container">
     {% if lastEvent is empty %}
-    <div class="event event-last">
-        <h3>RAS</h3>
-        <p>RAS</p>
-    </div>
-    {% else %}
-    {# <div class="event event-last">
-        <h3>{{ lastEvent[0].name }}</h3>
-        <p>{{ lastEvent[0].date|date('d/m/Y') }} à {{ lastEvent[0].date|date('H:i') }} UTC</p>
-        <button class="btn btn-submit">Voir les résultats</button>
-    </div> #}
-    
-    <div class="card event event-last">
-                    <div class="card-title">
-                        <h3>Dernière course</h3>
-                    </div>
-                    <div class="card-content">
-                        <div class="info-container">
-                            <div class="card-header">
-                                <div class="flag">
-                                    <span class="fi fi-{{ lastEvent[0].countryCode }}"></span>
-                                </div>
-                                <div class="title">
-                                    <h3>{{ lastEvent[0].country }}</h3>
-                                </div> 
-                            </div>
-                            <h3>{{ lastEvent[0].name }}</h3>
-                            <p>Manche n° {{ lastEvent[0].round }}</p>
-                            <p>{{ lastEvent[0].date|date('d/m/Y') }} à {{ lastEvent[0].date|date('H:i') }} UTC</p>
-                        </div>
-{% if lastEvent[0].result is not null %}
-
-                        <div class="quali-container">
-                            <h4>Qualifications</h4>
-                            <p>Pole : </p>
-                            <p>{{ lastEvent[0].result.pole.fullname }}</p>
-                            <p>chrono : </p>
-                            <p>{{ lastEvent[0].result.time }}</p>
-                        </div>
-
-{% endif %}
-                        <div class="race-container">
-                            <h4>race results</h4>
-                            <div class="top3">
-                                <p>1. Win</p>
-                                <p>2. Second</p>
-                                <p>3. Third</p>
-                            </div>
-                        </div>
-                    </div>
-                    {# <div class="button-container">
-                        <button class="btn btn-submit">Voir les résultats</button>
-                    </div> #}
-                </div>
+            <div class="card event event-last">
+                <h3>Dernière Course : </h3>
+                <p>La saison n'a pas encore commencé...</p>
+            </div>
+        {% else %}
+					<div class="card event event-last">
+						<div class="card-title">
+							<h3>Dernière Course : </h3>
+						</div>
+						<div class="card-header">
+							<div class="flag">
+								<span class="fi fi-{{ lastEvent[0].countryCode }}"></span>
+							</div>
+							<div class="title">
+								<h3>{{ lastEvent[0].country }}</h3>
+								<h3>{{ lastEvent[0].name }}</h3>
+							</div>
+						</div>
+						<div class="card-content">
+							<div class="info-container">
+								<h4>Résultats :</h4>
+								<p>Manche n°
+									{{ lastEvent[0].round }} - {{ lastEvent[0].locality }}</p>								
+									<p><span class="bold">Qualifications : </span>
+										{{ lastEvent[0].qualifyingDate|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
+										à 
+										{{ lastEvent[0].qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
+										{# ({{ lastEvent[0].qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC) #}
+									</p>
+									<p><span class="bold">Course: </span>
+										{{ lastEvent[0].date|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
+										à
+										{{ lastEvent[0].date|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
+										{# ({{ lastEvent[0].date|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC) #}
+									</p>
+							</div>
+								{% if lastEvent[0].result is not null %}
+									<div class="quali-container">
+										<h4>Qualifications :</h4>
+										<p>Pole :
+											{{ lastEvent[0].result.pole.fullname }}</p>
+										<p>chrono :
+											{{ lastEvent[0].result.time }}</p>
+									</div>
+								{% else %}
+									<div class="quali-container">
+										<h4>Qualifications :</h4>
+										<p>En attente des données...</p>
+									</div>
+								{% endif %}
+								{% if lastEvent[0].result.finishedFirst is not null %}
+								<div class="race-container">
+									<h4>Course :</h4>
+									<p>Vainqueur :
+										{{ lastEvent[0].result.finishedFirst.fullname }}</p>
+									<p>2eme place :
+										{{ lastEvent[0].result.finishedSecond.fullname }}</p>
+									<p>3eme place :
+									{{ lastEvent[0].result.finishedThird.fullname }}</p>
+								</div>
+								{% else %}
+									<div class="race-container">
+										<h4>Course :</h4>
+										<p>En attente des données...</p>
+									</div>
+								{% endif %}
+					</div>
+			</div>
     {% endif %}
-    {% if lastResult %}
+
+    {% if lastResult is not null %}
         <div class="card event event-last">
             <div class="card-title">
                 <h3>Dernier résultat en base de données :</h3>
             </div>
-            <h3>{{ lastResult.event.name }}</h3>
-            <p>{{ lastResult.time}}</p>
+            <div class="card-header">
+                <div class="flag">
+                    <span class="fi fi-{{ lastResult.event.countryCode }}"></span>
+                </div>
+                <div class="title">
+                    <h3>{{ lastResult.event.country }}</h3>
+                    <h3>{{ lastResult.event.name }}</h3>
+                </div>
+            </div>
+            {% if lastResult.pole.fullname is not null %}
+            <p>Pole : {{ lastResult.pole.fullname }} - {{ lastResult.time }}</p>
+            {% endif %}
+            {% if lastResult.finishedFirst is not null %}
+            <p>Course : {{ lastResult.finishedFirst.fullname}} / {{ lastResult.finishedSecond.fullname}} / {{ lastResult.finishedThird.fullname}}</p>
+            {% endif %}
         </div>
+        {% else %}
+            <div class="card event event-last">
+                <h3>Dernier résultat en base de données :</h3>
+                <p>Pas de données</p>
+            </div>
     {% endif %}
-    {% if toUpdate == true %}
-        <a href="{{ path('back_utility_get_result') }}"><button class="btn btn-submit">Récupérer le dernier résultat</button></a>
-    {% else %}
-        <button class="btn btn-disabled">Résultats à jour</button>
-    {% endif %}
-    {% if toCalculate == true %}
-        <a href="{{ path('back_utility_calculate_scores') }} "><button class="btn btn-submit">Calculer les scores</button></a>
-    {% else %}
-         <button class="btn btn-disabled">Scores à jour</button>   
-    {% endif %}
-    {% if toCalculateRanking == true %}
-    <a href="{{ path('back_utility_calculate_rankings') }} "><button class="btn btn-submit">Calculer le classement général</button></a>
-    {% else %}
-        <button class="btn btn-disabled">Classement à jour</button> 
-    {% endif %}
+    <div class="button-container">
+        {% if toUpdate == true %}
+            <a href="{{ path('back_utility_get_result') }}"><button class="btn btn-submit">Récupérer le dernier résultat</button></a>
+        {% else %}
+            <button class="btn btn-disabled">Résultats à jour</button>
+        {% endif %}
+        {% if toCalculate == true %}
+            <a href="{{ path('back_utility_calculate_scores') }} "><button class="btn btn-submit">Calculer les scores</button></a>
+        {% else %}
+            <button class="btn btn-disabled">Scores à jour</button>   
+        {% endif %}
+        {% if toCalculateRanking == true %}
+            <a href="{{ path('back_utility_calculate_rankings') }} "><button class="btn btn-submit">Calculer le classement général</button></a>
+        {% else %}
+            <button class="btn btn-disabled">Classement à jour</button> 
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

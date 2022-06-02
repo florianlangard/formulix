@@ -75,7 +75,7 @@ class MainController extends AbstractController
             else {
                 $lastEventPodium = null;
             }
-            // dd($lastEventRacePodium);
+            // dd($lastEventRacePodium, $lastEventPodium);
             return $this->render('main/index.html.twig',[
                 'nextEvent' => $nextEvent, 
                 'lastEvent' => $lastEvent, 
