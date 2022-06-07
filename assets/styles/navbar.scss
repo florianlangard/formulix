@@ -33,7 +33,11 @@
     background-color: vars.$lightGrey;
     border-bottom: 2px solid vars.$darkGrey;
     display: flex;
-    margin-top: 80px;
+    margin-top: 84px;
+    // position: fixed;
+    // width: 100%;
+    // top: 0;
+    // z-index: 1;
     height: 50px;
     align-items: center;
     & li > a {

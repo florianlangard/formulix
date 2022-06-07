@@ -32,7 +32,7 @@ class PredictionFormType extends AbstractType
                     
                 ],
                 'attr' => [
-                    'placeholder' => "ex: 1"
+                    'placeholder' => "exemple: 1"
                 ],
                 'mapped' => false,
             ])
@@ -44,7 +44,7 @@ class PredictionFormType extends AbstractType
                     new Range(['min' => 00, 'max' => 59])
                 ],
                 'attr' => [
-                    'placeholder' => "ex: 22"
+                    'placeholder' => "exemple: 09"
                 ],
                 'mapped' => false,
             ])
@@ -56,7 +56,7 @@ class PredictionFormType extends AbstractType
                     new Range(['min' => 000, 'max' => 999])
                 ],
                 'attr' => [
-                    'placeholder' => "ex: 059"
+                    'placeholder' => "exemple: 059"
                 ],
                 'mapped' => false,
             ])

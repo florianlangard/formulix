@@ -238,7 +238,7 @@
 					<div class="podium-users">
 						{% if podium is not empty %}
 						{% for item in podium %}
-							<p>{{ loop.index }} - {{ item.user.personaname }} | {{ item.pole.fullname }} | {{ item.time }} | {{ item.score }} pts</p>
+							<p>{{ loop.index }} - <span class="bold">{{ item.user.personaname }}</span> | {{ item.pole.fullname }} | {{ item.time }} | {{ item.score }} pts</p>
 						{% endfor %}
 						{% else %}
 							<p>En attente...</p>
@@ -251,7 +251,7 @@
 					<div class="podium-users">
 						{% if racePodium is not empty %}
 						{% for item in racePodium %}
-							<p>{{ loop.index }} - {{ item.user.personaname }} | {{ item.finishFirst.fullname }} | {{ item.finishSecond.fullname }} | {{ item.finishThird.fullname }} | {{ item.raceScore }} pts</p>
+							<p>{{ loop.index }} - <span class="bold">{{ item.user.personaname }}</span> | {{ item.finishFirst.fullname }} | {{ item.finishSecond.fullname }} | {{ item.finishThird.fullname }} | {{ item.raceScore }} pts</p>
 						{% endfor %}
 						{% else %}
 							<p>En attente...</p>
@@ -264,7 +264,7 @@
 					<div class="podium-users">
 						{% if globalPodium is not empty %}
 						{% for item in globalPodium %}
-							<p>{{ loop.index }} - {{ item.user.personaname }} | {{ item.totalScore }} pts</p>
+							<p>{{ loop.index }} - <span class="bold">{{ item.user.personaname }}</span> | {{ item.totalScore }} pts</p>
 						{% endfor %}
 						{% else %}
 							<p>En attente...</p>
