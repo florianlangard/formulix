@@ -13,6 +13,7 @@ use App\Repository\EventRepository;
 use App\Repository\PodiumRepository;
 use App\Repository\ScoreRepository;
 use App\Repository\PredictionRepository;
+use App\Service\PodiumBuilder;
 use DateTimeZone;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,6 +41,7 @@ class MainController extends AbstractController
         DriverRepository $driverRepository,
         SluggerInterface $slugger,
         PodiumRepository $podiumRepository,
+        PodiumBuilder $podiumBuilder,
         ScoreCalculator $scoreCalculator): Response
     {
             $date = new DateTime('now', new DateTimeZone('UTC'));
@@ -48,7 +50,7 @@ class MainController extends AbstractController
             $lastEvent = $eventRepository->findLastEvent($date);
             $topTen = $scoreRepository->findTopTen();
             $eventPodium = $podiumRepository->findOneBy(['event' => $lastEvent]);
-            
+            // $podiumBuilder->createGlobalEventPodium($lastEvent[0]);
 
             $total = $scoreRepository->findBy(['user' => $this->getUser(), 'season' => 2022]);
             $count = $predictionRepository->getUserPredictionCount($this->getUser());
