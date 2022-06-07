@@ -15,6 +15,7 @@ use App\Repository\UserRepository;
 use App\Repository\EventRepository;
 use App\Repository\ScoreRepository;
 use App\Repository\PredictionRepository;
+use App\Service\DateChecker;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -50,29 +51,27 @@ class PredictionController extends AbstractController
         ManagerRegistry $doctrine,
         PredictionRepository $predictionRepository,
         ScoreRepository $scoreRepository,
-        FormatConverter $converter
+        FormatConverter $converter,
+        DateChecker $dateChecker
         ): Response
     {
         $user = $this->getUser();
-        $currentDate = new DateTime();
-
         // Redirect if wrong event param
         if( $event === null) {
             $this->addFlash('error', 'pas d\'évènement trouvé');
             return $this->redirectToRoute('events_list');
         }
         // Redirect if event already began
-        if ($currentDate > $event->getQualifyingDate()) {
-            return $this->redirectToRoute('home', ['error' => 'Trop tard, ça a déjà commencé!']);
+        $validDate = $dateChecker->checkDate($event->getQualifyingDate());
+        if (!$validDate) {
+            $this->addFlash('error', 'Trop tard, ça a déjà commencé!');
+            return $this->redirectToRoute('home');
         }
         
         if ($user) {
-
             $rankedUser = $scoreRepository->findOneBy(['user' => $user, 'season' => $event->getSeason()]);
             $existingPrediction = $predictionRepository->findOneBy(['user' => $user, 'event' => $event]);
             
-            // dd($existingPrediction->getPole());
-
             if (!empty($existingPrediction)) {
                 // dd($existingPrediction);
                 if ($existingPrediction->getPole() !== null) {
@@ -93,8 +92,11 @@ class PredictionController extends AbstractController
                 // get identified User
                 // $user = $this->getUser();
                 $currentDate = new DateTime('now', new DateTimeZone('UTC'));
-                if ($currentDate > $event->getQualifyingDate()) {
-                    return $this->redirectToRoute('home', ['error' => 'Trop tard, ça a déjà commencé!']);
+                // Redirect if event already began
+                $validDate = $dateChecker->checkDate($event->getQualifyingDate());
+                if (!$validDate) {
+                    $this->addFlash('error', 'Trop tard, ça a déjà commencé!');
+                    return $this->redirectToRoute('home');
                 }
 
                 // Relations with prediction 
@@ -148,19 +150,20 @@ class PredictionController extends AbstractController
         ManagerRegistry $doctrine,
         PredictionRepository $predictionRepository,
         ScoreRepository $scoreRepository,
-        FormatConverter $converter
+        FormatConverter $converter,
+        DateChecker $dateChecker
         ): Response
     {
         $user = $this->getUser();
-        $currentDate = new DateTime();
-
         if( $event === null) {
             $this->addFlash('error', 'pas d\'évènement trouvé');
             return $this->redirectToRoute('events_list');
         }
-        // dd($currentDate, $event->getDate());
-        if ($currentDate > $event->getDate()) {
-            return $this->redirectToRoute('home', ['error' => 'Trop tard, ça a déjà commencé!']);
+        // Redirect if event already began
+        $validDate = $dateChecker->checkDate($event->getDate());
+        if (!$validDate) {
+            $this->addFlash('error', 'Trop tard, ça a déjà commencé!');
+            return $this->redirectToRoute('home');
         }
         
         if ($user) {
@@ -189,8 +192,11 @@ class PredictionController extends AbstractController
                 // get identified User
                 // $user = $this->getUser();
                 $currentDate = new DateTime('now', new DateTimeZone('UTC'));
-                if ($currentDate > $event->getQualifyingDate()) {
-                    return $this->redirectToRoute('home', ['error' => 'Trop tard, ça a déjà commencé!']);
+                // Redirect if event already began
+                $validDate = $dateChecker->checkDate($event->getDate());
+                if (!$validDate) {
+                    $this->addFlash('error', 'Trop tard, ça a déjà commencé!');
+                    return $this->redirectToRoute('home');
                 }
 
                 // Relations with prediction 
@@ -234,11 +240,23 @@ class PredictionController extends AbstractController
     /**
      * @Route("/prediction/edit/{id}", name="prediction_edit", methods={"GET", "POST", "PATCH", "PUT"})
      */
-    public function editPrediction(Request $request, Prediction $prediction = null, PredictionRepository $predictionRepository, ManagerRegistry $doctrine, FormatConverter $converter): Response
+    public function editPrediction(
+        Request $request, 
+        Prediction $prediction = null, 
+        PredictionRepository $predictionRepository, 
+        ManagerRegistry $doctrine, 
+        FormatConverter $converter,
+        DateChecker $dateChecker
+        ): Response
     {
         if( $prediction === null) {
             $this->addFlash('error', 'pas d\'évènement trouvé');
             return $this->redirectToRoute('events_list');
+        }
+        $validDate = $dateChecker->checkDate($prediction->getEvent()->getQualifyingDate());
+        if (!$validDate) {
+            $this->addFlash('error', 'Trop tard, ça a déjà commencé!');
+            return $this->redirectToRoute('home');
         }
         // if ($this->getUser()) {
             $form = $this->createForm(PredictionFormType::class, $prediction);
@@ -249,6 +267,11 @@ class PredictionController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 // get identified User
                 $user = $this->getUser();
+                $validDate = $dateChecker->checkDate($prediction->getEvent()->getQualifyingDate());
+                if (!$validDate) {
+                    $this->addFlash('error', 'Trop tard, ça a déjà commencé!');
+                    return $this->redirectToRoute('home');
+                }
                 // Relations with prediction 
                 $prediction->setUser($user);
 
@@ -280,11 +303,24 @@ class PredictionController extends AbstractController
     /**
      * @Route("/prediction/edit/race/{id}", name="race_prediction_edit", methods={"GET", "POST", "PATCH", "PUT"})
      */
-    public function editRacePrediction(Request $request, Prediction $prediction = null, PredictionRepository $predictionRepository, ManagerRegistry $doctrine, FormatConverter $converter): Response
+    public function editRacePrediction(
+        Request $request, 
+        Prediction $prediction = null, 
+        PredictionRepository $predictionRepository, 
+        ManagerRegistry $doctrine, 
+        FormatConverter $converter,
+        DateChecker $dateChecker
+        ): Response
     {
         if( $prediction === null) {
             $this->addFlash('error', 'pas d\'évènement trouvé');
             return $this->redirectToRoute('events_list');
+        }
+        // Redirect if event already began
+        $validDate = $dateChecker->checkDate($prediction->getEvent()->getDate());
+        if (!$validDate) {
+            $this->addFlash('error', 'Trop tard, ça a déjà commencé!');
+            return $this->redirectToRoute('home');
         }
         // if ($this->getUser()) {
             $form = $this->createForm(RacePredictionType::class, $prediction);
@@ -295,6 +331,12 @@ class PredictionController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 // get identified User
                 $user = $this->getUser();
+                // Redirect if event already began
+                $validDate = $dateChecker->checkDate($prediction->getEvent()->getDate());
+                if (!$validDate) {
+                    $this->addFlash('error', 'Trop tard, ça a déjà commencé!');
+                    return $this->redirectToRoute('home');
+                }
                 // Relations with prediction 
                 $prediction->setUser($user);
 
