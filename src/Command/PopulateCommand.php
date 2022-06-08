@@ -65,25 +65,26 @@ class PopulateCommand extends Command
         // }
 
         $users = $this->userRepository->findAll();
+        $drivers = $this->driverRepository->findAll();
 
         foreach ($users as $u) {
             $prediction = new Prediction();
             $prediction->setEvent($this->eventRepository->findOneBy(['round' => $round, 'season' => '2022'])); // Id of last past event
             $prediction->setCreatedAt(new DateTime('now', new DateTimeZone('UTC')));
             $prediction->setUser($u);
-            $pole = $this->driverRepository->findOneBy(['id' => rand(43,63)]);
+            $pole = $this->driverRepository->findOneBy(['id' => rand($drivers[0]->getId(),$drivers[count($drivers)-1]->getId())]);
             $prediction->setPole($pole);
             $prediction->setTime('1:'.rand(25, 35).'.'.random_int(000,999));
 
-            $first = $this->driverRepository->findOneBy(['id' => rand(43,63)]);
+            $first = $this->driverRepository->findOneBy(['id' => rand($drivers[0]->getId(),$drivers[count($drivers)-1]->getId())]);
             $prediction->setFinishFirst($first);
-            $second = $this->driverRepository->findOneBy(['id' => rand(43,63)]);
+            $second = $this->driverRepository->findOneBy(['id' => rand($drivers[0]->getId(),$drivers[count($drivers)-1]->getId())]);
             while ($second === $first) {
-                $second = $this->driverRepository->findOneBy(['id' => rand(43,63)]);
+                $second = $this->driverRepository->findOneBy(['id' => rand($drivers[0]->getId(),$drivers[count($drivers)-1]->getId())]);
             }
-            $third = $this->driverRepository->findOneBy(['id' => rand(43,63)]);
+            $third = $this->driverRepository->findOneBy(['id' => rand($drivers[0]->getId(),$drivers[count($drivers)-1]->getId())]);
             while ($third === $first || $third === $second) {
-                $third = $this->driverRepository->findOneBy(['id' => rand(43,63)]);
+                $third = $this->driverRepository->findOneBy(['id' => rand($drivers[0]->getId(),$drivers[count($drivers)-1]->getId())]);
             }
             $prediction->setFinishSecond($second);
             $prediction->setFinishThird($third);
