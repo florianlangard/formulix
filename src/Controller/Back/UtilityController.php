@@ -8,6 +8,7 @@ use App\Repository\ResultRepository;
 use App\Repository\ScoreRepository;
 use App\Service\DataImporter;
 use App\Service\FOneApi;
+use App\Service\PodiumBuilder;
 use App\Service\ScoreCalculator;
 use DateTime;
 use DateTimeZone;
@@ -32,12 +33,10 @@ class UtilityController extends AbstractController
 
         $lastEvent = $eventRepository->findLastEvent(new DateTime('now', new DateTimeZone('UTC')));
         $lastResult = $resultRepository->findOneBy([], ['id' => 'DESC']);
-        // dd($lastResult);
         
         $checkPredictions = $predictionRepository->findOneBy(['event' => $lastResult->getEvent()]);
-        
         $checkRankings = $scoreRepository->findOneBy(['lastEvent' => $lastResult->getEvent()]);
-        // dd($checkRankings);
+        
         if ($checkPredictions === null) {
             $toCalculate = false;
         }
@@ -80,7 +79,7 @@ class UtilityController extends AbstractController
     /**
      * @Route("/back/utility/calculate_scores", name="back_utility_calculate_scores")
      */
-    public function calculateScores(ScoreCalculator $scoreCalculator, EventRepository $eventRepository): Response
+    public function calculateScores(ScoreCalculator $scoreCalculator, EventRepository $eventRepository, PodiumBuilder $podiumBuilder): Response
     {
         
         $done = 'calculated';
@@ -92,6 +91,8 @@ class UtilityController extends AbstractController
             return $this->redirectToRoute('back_utility');
         } else {
             $this->addFlash('success', 'calcul des résultats (Qualifs) effectué');
+            $podiumBuilder->createQualifyingPodium($event);
+            $this->addFlash('success', 'Podium pour '. $event->getName() .' (qualifications) crée');
         }
 
         $calculateRaceScore = $scoreCalculator->calculateRaceScore($event);
@@ -100,10 +101,14 @@ class UtilityController extends AbstractController
             return $this->redirectToRoute('back_utility');
         } else {
             $this->addFlash('success', 'calcul des résultats (Course) effectué');
+            $podiumBuilder->createRacePodium($event);
+            $this->addFlash('success', 'Podium pour '. $event->getName() .' (course) crée');
         }
 
         $scoreCalculator->calculateGlobalEventScore($event);
         $this->addFlash('success', 'calcul des scores globaux effectué');
+        $podiumBuilder->createGlobalEventPodium($event);
+        $this->addFlash('success', 'Podium pour '. $event->getName() .' (Global) crée');
 
         return $this->redirectToRoute('back_utility', ['status' => $done]);
     }
