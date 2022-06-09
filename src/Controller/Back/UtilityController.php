@@ -84,7 +84,7 @@ class UtilityController extends AbstractController
     {
         
         $done = 'calculated';
-        $event = $eventRepository->findOneBy(['round' => 7]); //! Hardcode
+        $event = $eventRepository->findOneBy(['round' => 8]); //! Hardcode
 
         $calculateQualifyingScore = $scoreCalculator->calculateQualifyingScore($event);
         if ($calculateQualifyingScore === false) {

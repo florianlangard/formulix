@@ -50,8 +50,8 @@ class MainController extends AbstractController
             $lastEvent = $eventRepository->findLastEvent($date);
             $topTen = $scoreRepository->findTopTen();
             $eventPodium = $podiumRepository->findOneBy(['event' => $lastEvent]);
-            // $podiumBuilder->createGlobalEventPodium($lastEvent[0]);
-
+            // $podiumBuilder->createQualifyingPodium($nextEvent[0]);
+            
             $total = $scoreRepository->findBy(['user' => $this->getUser(), 'season' => 2022]);
             $count = $predictionRepository->getUserPredictionCount($this->getUser());
             $predictions = $predictionRepository->findAll();
