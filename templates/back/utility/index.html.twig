@@ -56,7 +56,7 @@
 										<p>En attente des données...</p>
 									</div>
 								{% endif %}
-								{% if lastEvent[0].result.finishedFirst is not null %}
+								{% if lastEvent[0].result.finishedFirst is defined %}
 								<div class="race-container">
 									<h4>Course :</h4>
 									<p>Vainqueur :
