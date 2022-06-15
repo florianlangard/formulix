@@ -44,7 +44,7 @@ class UtilityController extends AbstractController
             $toCalculate = false;
         }
         
-        if ($lastEvent[0]->getName() === $lastResult->getEvent()->getName()) {
+        if ($lastEvent[0]->getName() === $lastResult->getEvent()->getName() && ($lastResult->getPole() !== null && $lastResult->getFinishedFirst() !== null)) {
             $toUpdate = false;
         }
         if ($checkRankings !== null) {
@@ -64,16 +64,27 @@ class UtilityController extends AbstractController
     /**
      * @Route("/back/utility/get_result", name="back_utility_get_result")
      */
-    public function getLastResult(EventRepository $eventRepository, ResultRepository $resultRepository, FOneApi $fOneApi, DataImporter $dataImporter): Response
+    public function getLastResult(EventRepository $eventRepository, ResultRepository $resultRepository, DataImporter $dataImporter): Response
     {
-        $done = 'fetched';
         $lastEvent = $eventRepository->findLastEvent(new DateTime('now', new DateTimeZone('UTC')));
-        // $qualifyingData = $fOneApi->fetchQualifyingResults($lastEvent[0]->getSeason(), $lastEvent[0]->getRound());
-        $result = $resultRepository->findOneBy(['event' => $lastEvent[0]]);
-        dd($result);
-        // $test = $dataImporter->ImportSeasonDrivers('2022');
-        // dd($test);
-        return $this->redirectToRoute('back_utility', ['status' => $done]);
+
+        $qualifyingData = $dataImporter->importQualifyingResults($lastEvent[0]->getSeason(), $lastEvent[0]->getRound());
+        if ($qualifyingData === null) {
+            $this->addFlash('error', 'Impossible de récupérer les résultats (Qualifs), données indisponibles');
+            return $this->redirectToRoute('back_utility');
+        } else {
+            $this->addFlash('success', 'Récupération des résultats (Qualifs) effectuée');
+        }
+
+        $raceData = $dataImporter->importRaceResults($lastEvent[0]->getSeason(), $lastEvent[0]->getRound());
+        if ($raceData === null) {
+            $this->addFlash('error', 'Impossible de récupérer les résultats (Course), données indisponibles');
+            return $this->redirectToRoute('back_utility');
+        } else {
+            $this->addFlash('success', 'Récupération des résultats (Course) effectuée');
+        }
+
+        return $this->redirectToRoute('back_utility');
     }
 
     /**
@@ -83,7 +94,7 @@ class UtilityController extends AbstractController
     {
         
         $done = 'calculated';
-        $event = $eventRepository->findOneBy(['round' => 7]); //! Hardcode
+        $event = $eventRepository->findOneBy(['round' => 8]); //! Hardcode
 
         $calculateQualifyingScore = $scoreCalculator->calculateQualifyingScore($event);
         if ($calculateQualifyingScore === false) {
@@ -118,7 +129,7 @@ class UtilityController extends AbstractController
      */
     public function calculateGlobalRanking(ScoreCalculator $scoreCalculator, EventRepository $eventRepository): Response
     {
-        $event = $eventRepository->findOneBy(['round' => 7]); //! Hardcode
+        $event = $eventRepository->findOneBy(['round' => 8]); //! Hardcode
         $scoreCalculator->calculateGlobalRankings($event);
         $this->addFlash('success', 'calcul du classement général effectué');
         return $this->redirectToRoute('back_utility');
