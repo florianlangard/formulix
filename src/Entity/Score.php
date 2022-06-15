@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ScoreRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ScoreRepository::class)
@@ -24,12 +25,14 @@ class Score
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"rankings_global"})
      */
     private $total;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="scores")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"rankings"})
      */
     private $user;
 
@@ -40,11 +43,13 @@ class Score
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"rankings_qualifying"})
      */
     private $qualifyingScore;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"rankings_race"})
      */
     private $raceScore;
 

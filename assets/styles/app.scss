@@ -8,6 +8,23 @@
 body {
     background-color: vars.$altDarkGrey;
     font-family: 'Titillium', 'Roboto', sans-serif;
-    height: 100vh;
+    height: 100%;
     margin: 0;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: white;
+}
+
+::-webkit-scrollbar-thumb {
+    background: vars.$darkGrey;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    transform: scale(1.1);
 }

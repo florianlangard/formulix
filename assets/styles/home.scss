@@ -23,6 +23,7 @@ ul {
     min-height: 160px;
     background-color: vars.$lightGrey;
     margin-top: 80px;
+    border-bottom: 2px solid vars.$altDarkGrey;
     & p {
         margin: 0;
     }

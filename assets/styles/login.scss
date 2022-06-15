@@ -47,6 +47,13 @@
     &-title {
         text-transform: uppercase;
         font-size: 1.4em;
+        margin-top: 0;
+    }
+}
+
+.form-element {
+    & input {
+        margin-bottom: 8px;
     }
 }
 

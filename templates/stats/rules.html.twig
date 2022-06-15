@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formulix - Aide{% endblock %}
+
+{% block active_dashboard %}{% endblock %}
+
+{% block header %}
+	<header class="header">
+		<div class="header-container">
+			<div class="header-main">
+				<h1 class="main-title">Aide :</h1>
+				<p>Une question, un doute, c'est par ici! <span class="bold">En cours d'implémentation...</span></p>
+			</div>
+		</div>
+	</header>
+{% endblock %}
+{% block body %}
+<div class="body-container">
+    <section class="ranking-item" id="points-attribution">
+        <h2>Guide d'attribution des points :</h2>
+        <h3>Qualifications :</h3>
+            <p>Tu trouves qui fait la pôle, c'est <span class="bold">10 points! </span>Facile, ce sera Charles Leclerc.
+            Tu trouves le chrono <span class="bold">exact</span> de la pôle, c'est <span class="bold">20 points! </span>
+            Pas facile, mais on est pas des brutes :</p>
+            <ul id="qualifying-points-chart">
+                <li>- à 0,010 seconde près : <span class="bold">16 points</span></li>
+                <li>- à 0,100 seconde près : <span class="bold">10 points</span></li>
+                <li>- à 0,500 seconde près : <span class="bold">6 points</span></li>
+                <li>- à 1 seconde près : <span class="bold">3 points</span></li>
+            </ul>
+            <p>Tu es plus loin que ça, ça fera <span class="bold">1 point</span>, pour l'effort! Tu seras meilleur la prochaine fois.</p>
+        <h3>Course :</h3>
+            <p>Tu trouves le vainqueur? <span class="bold">9 points</span></p>
+            <p>Tu trouves le deuxième? <span class="bold">6 points</span></p>
+            <p>Tu trouves le troisième? <span class="bold">4 points</span></p>
+            <p>Si tu trouves un ou plusieurs des pilotes sur le podium, mais dans le désordre, <span class="bold">3 points</span> chacun.</p>
+            <p>Tu n'en as trouvé aucun? Prends tout de même <span class="bold">1 point</span>, et réessaie!</p>
+        <h3>Global :</h3>
+            <p>Pour le classement Global d'un week-end, on additionne le score des qualifications et de la course, voilà.</p>
+            <p>Il y a (aura) 3 classements généraux :</p>
+            <p>Un uniquement pour les qualifications, un pour les courses, et le général vraiment général.</p>
+            <p>Plus de classements, c'est plus d'occasions de montrer ton talent!</p>
+    </section>
+</div>
+{% endblock %}
