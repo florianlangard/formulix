@@ -1,0 +1,61 @@
+@use './vars';
+
+#points-attribution {
+    // background-color: vars.$lightGrey;
+    // border-radius: 2px;
+    // padding: 8px;
+    width: auto;
+    & p {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}
+
+.ranking-item {
+    display: flex;
+    flex-direction: column;
+    background-color: vars.$lightGrey;
+    border-radius: 2px;
+    padding: 8px;
+    width: 30%;
+    height: 600px;
+    overflow-y: scroll;
+    margin-bottom: 8px;
+    & h2 {
+        text-align: center;
+    }
+    & img {
+        height: 24px;
+        width: 24px;
+        display: inline-block;
+        margin-right: 8px;
+    }
+}
+
+.loader-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+}
+
+img.loader-img {
+    height: 64px;
+    width: 64px;
+    text-align: center;
+    animation: spinning .5s linear infinite;
+}
+
+@keyframes spinning {
+    0% {
+        transform:rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+@media screen and (max-width: 600px){
+    .ranking-item {
+        width: auto;
+    }
+}

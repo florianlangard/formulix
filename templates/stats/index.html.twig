@@ -1,21 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello StatsController!{% endblock %}
+{% block title %}Formulix - Statistiques{% endblock %}
 
 {% block active_dashboard %}{% endblock %}
 {% block active_stats %}active{% endblock %}
 
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('rankings') }}
+{% endblock %}
+	
 {% block header %}
 	<header class="header">
-	<div class="header-container">
-		<div class="header-main">
-			<h1 class="main-title">Statistiques</h1>
-			<p>Tous les chiffres.</p>
-			<h2>Coming Soon...</h2>
+		<div class="header-container">
+			<div class="header-main">
+				<h1 class="main-title">Statistiques</h1>
+				<p>Tous les chiffres, les classements, et d'autres trucs. <span class="bold">En cours d'implémentation, coming soon...</span></p>
+				<p>Pour en savoir plus sur la grille d'attribution des points ou le fonctionnement, <a href="{{path('rules')}}">cliquez ici</a></p>
+			</div>
 		</div>
-	</div>
 	</header>
 {% endblock %}
 
 {% block body %}
+	<div class="body-container">
+		<div class="flex-row-resp-container">
+			<section class="ranking-item" id="qualifying-ranking">
+				<h2><img src="{{ asset('assets/stopwatch-solid.svg') }}" class="" alt="chronomètre"> Classement Général Qualifs</h2>
+				<div class="loader-container" id="qualifying-loader">
+					<img src="{{ asset('assets/soft-tyre.svg') }}" alt="" class="loader-img">
+					<p>Chargement...</p>
+				</div>
+			</section>
+			<section class="ranking-item"  id="race-ranking">
+				<h2><img src="{{ asset('assets/flag-checkered-solid.svg') }}" alt="drapeau à damier">Classement Général Courses</h2>
+				<div class="loader-container" id="race-loader">
+					<img src="{{ asset('assets/medium-tyre.svg') }}" alt="" class="loader-img">
+					<p>Chargement...</p>
+				</div>
+			</section>
+			<section class="ranking-item" id="global-ranking">
+				<h2><img src="{{ asset('assets/flag-checkered-solid.svg') }}" alt="drapeau à damier">Classement Général</h2>
+				<div class="loader-container" id="global-loader">
+					<img src="{{ asset('assets/hard-tyre.svg') }}" alt="" class="loader-img">
+					<p>Chargement...</p>
+				</div>
+			</section>
+		</div>
+	</div>
 {% endblock %}

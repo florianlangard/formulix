@@ -7,9 +7,11 @@
 		<div class="header-container">
 			<div class="header-main">
 				<h1 class="main-title">Tableau de Bord</h1>
-				<p>Retrouvez ici toutes les infos utiles.</p>
+				<p>Retrouvez ici toutes les infos utiles. Pour en savoir plus sur la grille d'attribution des points ou le fonctionnement, 
+					<a href="{{path('rules')}}">cliquez ici</a>
+				</p>
 				<p id="current-date">
-					{{date|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY")}}
+					<span class="bold">{{date|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY")}}</span>
 				</p>
 			</div>
 			{# <div class="header-info">

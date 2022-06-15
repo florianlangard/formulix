@@ -32,4 +32,12 @@ class StatsController extends AbstractController
             'usersCount' => $usersCount
         ]);
     }
+
+    /**
+     * @Route("/rules", name="rules")
+     */
+    public function rules(): Response
+    {
+        return $this->render('stats/rules.html.twig');
+    }
 }
