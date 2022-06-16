@@ -11,71 +11,96 @@
                 <p>La saison n'a pas encore commencé...</p>
             </div>
         {% else %}
-					<div class="card event event-last">
-						<div class="card-title">
-							<h3>Dernière Course : </h3>
-						</div>
-						<div class="card-header">
-							<div class="flag">
-								<span class="fi fi-{{ lastEvent[0].countryCode }}"></span>
-							</div>
-							<div class="title">
-								<h3>{{ lastEvent[0].country }}</h3>
-								<h3>{{ lastEvent[0].name }}</h3>
-							</div>
-						</div>
-						<div class="card-content">
-							<div class="info-container">
-								<h4>Résultats :</h4>
-								<p>Manche n°
-									{{ lastEvent[0].round }} - {{ lastEvent[0].locality }}</p>								
-									<p><span class="bold">Qualifications : </span>
-										{{ lastEvent[0].qualifyingDate|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
-										à 
-										{{ lastEvent[0].qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
-										{# ({{ lastEvent[0].qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC) #}
-									</p>
-									<p><span class="bold">Course: </span>
-										{{ lastEvent[0].date|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
-										à
-										{{ lastEvent[0].date|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
-										{# ({{ lastEvent[0].date|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC) #}
-									</p>
-							</div>
-								{% if lastEvent[0].result is not null %}
-									<div class="quali-container">
-										<h4>Qualifications :</h4>
-										<p>Pole :
-											{{ lastEvent[0].result.pole.fullname }}</p>
-										<p>chrono :
-											{{ lastEvent[0].result.time }}</p>
-									</div>
-								{% else %}
-									<div class="quali-container">
-										<h4>Qualifications :</h4>
-										<p>En attente des données...</p>
-									</div>
-								{% endif %}
-								{% if lastEvent[0].result.finishedFirst is defined %}
-								<div class="race-container">
-									<h4>Course :</h4>
-									<p>Vainqueur :
-										{{ lastEvent[0].result.finishedFirst.fullname }}</p>
-									<p>2eme place :
-										{{ lastEvent[0].result.finishedSecond.fullname }}</p>
-									<p>3eme place :
-									{{ lastEvent[0].result.finishedThird.fullname }}</p>
-								</div>
-								{% else %}
-									<div class="race-container">
-										<h4>Course :</h4>
-										<p>En attente des données...</p>
-									</div>
-								{% endif %}
+			<div class="card event event-last">
+				<div class="card-title">
+					<h3>Dernière Course : </h3>
+				</div>
+				<div class="card-header">
+					<div class="flag">
+						<span class="fi fi-{{ lastEvent[0].countryCode }}"></span>
 					</div>
+					<div class="title">
+						<h3>{{ lastEvent[0].country }}</h3>
+						<h3>{{ lastEvent[0].name }}</h3>
+					</div>
+				</div>
+				<div class="card-content">
+					<div class="info-container">
+						<h4>Résultats :</h4>
+						<p>Manche n°
+							{{ lastEvent[0].round }} - {{ lastEvent[0].locality }}</p>								
+							<p><span class="bold">Qualifications : </span>
+								{{ lastEvent[0].qualifyingDate|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
+								à 
+								{{ lastEvent[0].qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
+								{# ({{ lastEvent[0].qualifyingDate|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC) #}
+							</p>
+							<p><span class="bold">Course: </span>
+								{{ lastEvent[0].date|format_datetime(locale='fr',pattern="EE dd MMMM YYYY") }}
+								à
+								{{ lastEvent[0].date|format_datetime(locale='fr', pattern='HH:mm', timezone='Europe/Paris') }} (FR)
+								{# ({{ lastEvent[0].date|format_datetime(locale='fr', pattern='HH:mm', timezone='UTC') }} UTC) #}
+							</p>
+					</div>
+						{% if lastEvent[0].result is not null %}
+							<div class="quali-container">
+								<h4>Qualifications :</h4>
+								<p>Pole :
+									{{ lastEvent[0].result.pole.fullname }}</p>
+								<p>chrono :
+									{{ lastEvent[0].result.time }}</p>
+							</div>
+						{% else %}
+							<div class="quali-container">
+								<h4>Qualifications :</h4>
+								<p>En attente des données...</p>
+							</div>
+						{% endif %}
+						{% if lastEvent[0].result.finishedFirst is not null %}
+						<div class="race-container">
+							<h4>Course :</h4>
+							<p>Vainqueur :
+								{{ lastEvent[0].result.finishedFirst.fullname }}</p>
+							<p>2eme place :
+								{{ lastEvent[0].result.finishedSecond.fullname }}</p>
+							<p>3eme place :
+							{{ lastEvent[0].result.finishedThird.fullname }}</p>
+						</div>
+						{% else %}
+							<div class="race-container">
+								<h4>Course :</h4>
+								<p>En attente des données...</p>
+							</div>
+						{% endif %}
+				</div>
 			</div>
     {% endif %}
 
+	{% if ongoingEvent is not null %}
+		<div class="card event event-last">
+			<div class="card-title">
+                <h3>En cours :</h3>
+            </div>
+            <div class="card-header">
+                <div class="flag">
+                    <span class="fi fi-{{ ongoingEvent.countryCode }}"></span>
+                </div>
+                <div class="title">
+                    <h3>{{ ongoingEvent.country }}</h3>
+                    <h3>{{ ongoingEvent.name }}</h3>
+				</div>
+			</div>
+			<div class="quali-container">
+				<h4>Qualifications :</h4>
+					{% if ongoingEvent.result is not null %}
+						<p>Pole : {{ ongoingEvent.result.pole.fullname }} - {{ ongoingEvent.result.time }}</p>
+					{% else %}
+						<p>En attente des données...</p>
+					{% endif %}
+			</div>
+		</div>
+	{% endif %}
+	
     {% if lastResult is not null %}
         <div class="card event event-last">
             <div class="card-title">

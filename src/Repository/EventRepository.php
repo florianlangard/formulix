@@ -39,6 +39,23 @@ class EventRepository extends ServiceEntityRepository
     }
 
     /**
+     * Find if an Event is ongoing
+     *
+     * @param \Datetime $date
+     * @return Event|null $event
+     */
+    public function findOngoingEvent($date)
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.qualifyingDate < :val')
+            ->andWhere('e.date > :val')
+            ->setParameter('val', $date)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    /**
      * Returns an array with last event
      *
      * @param \Datetime $date
