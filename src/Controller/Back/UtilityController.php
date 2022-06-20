@@ -102,8 +102,8 @@ class UtilityController extends AbstractController
     {
         
         $done = 'calculated';
-        $event = $eventRepository->findOneBy(['round' => $eventRepository->findLastEvent(new DateTime('now', new DateTimeZone('UTC')))]);
-
+        $event = $eventRepository->findOneBy(['id' => $eventRepository->findLastEvent(new DateTime('now', new DateTimeZone('UTC')))]);
+        
         $calculateQualifyingScore = $scoreCalculator->calculateQualifyingScore($event);
         if ($calculateQualifyingScore === false) {
             $this->addFlash('error', 'Impossible de calculer ces scores (Qualifs), résultats indisponibles');
@@ -137,7 +137,7 @@ class UtilityController extends AbstractController
      */
     public function calculateGlobalRanking(ScoreCalculator $scoreCalculator, EventRepository $eventRepository): Response
     {
-        $event = $eventRepository->findOneBy(['round' => $eventRepository->findLastEvent(new DateTime('now', new DateTimeZone('UTC')))]);
+        $event = $eventRepository->findOneBy(['id' => $eventRepository->findLastEvent(new DateTime('now', new DateTimeZone('UTC')))]);
         $scoreCalculator->calculateGlobalRankings($event);
         $this->addFlash('success', 'calcul du classement général effectué');
         return $this->redirectToRoute('back_utility');
