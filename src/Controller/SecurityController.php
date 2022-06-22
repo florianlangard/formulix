@@ -33,7 +33,7 @@ class SecurityController extends AbstractController
     public function connect(ClientRegistry $clientRegistry)
     {
         $client = $clientRegistry->getClient('twitch_helix');
-        // dd($client);
+        
         return $client->redirect(['user:read:email'],[]);
     }
 

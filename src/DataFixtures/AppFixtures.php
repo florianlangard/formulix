@@ -8,18 +8,24 @@ use App\Entity\Driver;
 use DateTime;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @codeCoverageIgnore
  */
-class AppFixtures extends Fixture
+class AppFixtures extends Fixture implements FixtureGroupInterface
 {
     private $slugger;
 
     public function __construct(SluggerInterface $slugger)
     {
         $this->slugger = $slugger;
+    }
+
+    public static function getGroups(): array
+    {
+        return ['base_db'];
     }
 
     public function load(ObjectManager $manager): void

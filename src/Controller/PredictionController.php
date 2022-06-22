@@ -73,7 +73,7 @@ class PredictionController extends AbstractController
             $existingPrediction = $predictionRepository->findOneBy(['user' => $user, 'event' => $event]);
             
             if (!empty($existingPrediction)) {
-                // dd($existingPrediction);
+                
                 if ($existingPrediction->getPole() !== null) {
                     return $this->redirectToRoute('prediction_edit', ['id' => $existingPrediction->getId()]);
                 }
@@ -172,7 +172,7 @@ class PredictionController extends AbstractController
             $existingPrediction = $predictionRepository->findOneBy(['user' => $user, 'event' => $event]);
             
             if (!empty($existingPrediction)) {
-                // dd($existingPrediction);
+                
                 if ($existingPrediction->getFinishFirst() !== null) {
                     return $this->redirectToRoute('race_prediction_edit', ['id' => $existingPrediction->getId()]);
                 }
