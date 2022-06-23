@@ -46,6 +46,13 @@ class PopulateCommand extends Command
         $this->addArgument('round', InputArgument::REQUIRED, 'enter the round number of requested race');
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
