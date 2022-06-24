@@ -33,12 +33,13 @@ class SecurityController extends AbstractController
     public function connect(ClientRegistry $clientRegistry)
     {
         $client = $clientRegistry->getClient('twitch_helix');
-        // dd($client);
+        
         return $client->redirect(['user:read:email'],[]);
     }
 
     /**
      * @Route("/logout", name="app_logout")
+     * @codeCoverageIgnore
      */
     public function logout(): void
     {

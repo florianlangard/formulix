@@ -55,7 +55,7 @@ class MainController extends AbstractController
             $total = $scoreRepository->findBy(['user' => $this->getUser(), 'season' => 2022]);
             $count = $predictionRepository->getUserPredictionCount($this->getUser());
             $predictions = $predictionRepository->findAll();
-            // dd($predictions);
+            
             if ($predictions != null) {
                 $totalCount = $predictionRepository->getPredictionCount($nextEvent[0]->getId());
                 $totalCountNext = $predictionRepository->getPredictionCount($nextEvent[1]->getId());
@@ -77,7 +77,7 @@ class MainController extends AbstractController
             else {
                 $lastEventPodium = null;
             }
-            // dd($lastEventRacePodium, $lastEventPodium);
+            
             return $this->render('main/index.html.twig',[
                 'nextEvent' => $nextEvent, 
                 'lastEvent' => $lastEvent, 

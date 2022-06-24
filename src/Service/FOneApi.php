@@ -6,6 +6,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+/**
+* @codeCoverageIgnore
+*/
 class FOneApi
 {
     private $client;

@@ -21,7 +21,6 @@ class ResultController extends AbstractController
      */
     public function index(ResultRepository $resultRepository): Response
     {
-        dump($resultRepository->findAll());
         return $this->render('back/result/index.html.twig', [
             'results' => $resultRepository->findAll(),
         ]);

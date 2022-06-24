@@ -16,6 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
+/**
+* @codeCoverageIgnore
+*/
 class DataImporter
 {
     private $client;

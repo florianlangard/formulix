@@ -4,8 +4,10 @@ namespace App\Form;
 
 use App\Entity\Event;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class EventType extends AbstractType
 {
@@ -14,12 +16,14 @@ class EventType extends AbstractType
         $builder
             ->add('name')
             ->add('date')
+            ->add('qualifying_date', DateTimeType::class)
             ->add('round')
             ->add('season')
             ->add('circuit_name')
             ->add('locality')
             ->add('country_code')
             ->add('country')
+            ->add('slug')
             // ->add('result')
         ;
     }
