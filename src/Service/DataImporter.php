@@ -16,6 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
+/**
+* @codeCoverageIgnore
+*/
 class DataImporter
 {
     private $client;
@@ -50,12 +53,16 @@ class DataImporter
      *
      * @param int|string $year
      * @param int|string $round
-     * @return void
+     * @return Result $result
      */
     public function ImportQualifyingResults($year, $round)
     {
         $qualifyingResult = $this->fOneApi->fetchQualifyingResults($year, $round);
-        $filteredData = $qualifyingResult['MRData']['RaceTable']['Races'][0]['QualifyingResults'][0];
+        if (!empty($qualifyingResult['MRData']['RaceTable']['Races'])) {
+            $filteredData = $qualifyingResult['MRData']['RaceTable']['Races'][0]['QualifyingResults'][0];
+        } else {
+            return null;
+        };
 
         $event = $this->eventRepository->findOneBy(['season' => $year, 'round' => $round]);
         $result = $this->resultRepository->findOneBy(['event' => $event]);
@@ -70,6 +77,7 @@ class DataImporter
         $result->setUpdatedAt(new DateTime('now', new DateTimeZone('UTC')));
         $this->em->persist($result);
         $this->em->flush();
+        return $result;
     }
 
     /**
@@ -77,12 +85,16 @@ class DataImporter
      *
      * @param int|string $year
      * @param int|string $round
-     * @return void
+     * @return Result $result
      */
     public function ImportRaceResults($year, $round)
     {
         $raceResult = $this->fOneApi->fetchRaceResults($year, $round);
-        $filteredData = $raceResult['MRData']['RaceTable']['Races'][0]['Results'];
+        if (!empty($raceResult['MRData']['RaceTable']['Races'])) {
+            $filteredData = $raceResult['MRData']['RaceTable']['Races'][0]['Results'];
+        } else {
+            return null;
+        }
 
         $event = $this->eventRepository->findOneBy(['season' => $year, 'round' => $round]);
         $result = $this->resultRepository->findOneBy(['event' => $event]);
@@ -96,6 +108,7 @@ class DataImporter
         $result->setUpdatedAt(new DateTime('now', new DateTimeZone('UTC')));
         $this->em->persist($result);
         $this->em->flush();
+        return $result;
     }
 
     /**

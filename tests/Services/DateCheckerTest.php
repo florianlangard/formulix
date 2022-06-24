@@ -12,47 +12,22 @@ use App\Repository\EventRepository;
 
 class DateCheckerTest extends KernelTestCase {
 
-    public function testDateCheckerWithValidRaceDate()
+    public function testDateCheckerWithValidDate()
     {
         self::bootKernel();
         $container = static::getContainer();
         $dateChecker = $container->get(DateChecker::class);
-        $eventRepository = $container->get(EventRepository::class);
-        $testEvent = $eventRepository->findOneBy(['round' => 19, 'season' => '2022']);
-        $validDate = $dateChecker->checkDate($testEvent->getDate());
+        $validDate = $dateChecker->checkDate(new DateTime('+ 1 day'));
         $this->assertTrue($validDate);
     }
 
-    public function testDateCheckerWithValidQualifyingDate()
+    public function testDateCheckerWithNotValidDate()
     {
         self::bootKernel();
         $container = static::getContainer();
         $dateChecker = $container->get(DateChecker::class);
-        $eventRepository = $container->get(EventRepository::class);
-        $testEvent = $eventRepository->findOneBy(['round' => 19, 'season' => '2022']);
-        $validDate = $dateChecker->checkDate($testEvent->getQualifyingDate());
-        $this->assertTrue($validDate);
-    }
-
-    public function testDateCheckerWithNotValidRaceDate()
-    {
-        self::bootKernel();
-        $container = static::getContainer();
-        $dateChecker = $container->get(DateChecker::class);
-        $eventRepository = $container->get(EventRepository::class);
-        $testEvent = $eventRepository->findOneBy(['round' => 0, 'season' => '2022']);
-        $validDate = $dateChecker->checkDate($testEvent->getDate());
+        $validDate = $dateChecker->checkDate(new DateTime('- 1 day'));
         $this->assertFalse($validDate);
     }
 
-    public function testDateCheckerWithNotValidQualifyingDate()
-    {
-        self::bootKernel();
-        $container = static::getContainer();
-        $dateChecker = $container->get(DateChecker::class);
-        $eventRepository = $container->get(EventRepository::class);
-        $testEvent = $eventRepository->findOneBy(['round' => 0, 'season' => '2022']);
-        $validDate = $dateChecker->checkDate($testEvent->getQualifyingDate());
-        $this->assertFalse($validDate);
-    }
 }

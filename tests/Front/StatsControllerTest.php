@@ -19,6 +19,10 @@ class StatsControllerTest extends WebTestCase {
         $this->assertSelectorTextContains('h1', 'Statistiques');
     }
 
-    
+    public function testRulesPage() {
+        $client = static::createClient();
+        $client->request('GET', '/rules');
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+    }
 
 }

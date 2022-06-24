@@ -24,7 +24,6 @@ class StatsController extends AbstractController
         $predictionCount = $predictionRepository->getPredictionCount($lastEvent[0]->getId());
         $usersCount = $scoreRepository->getUsersCount('2022');
 
-        dump($globalRankings, $lastEventRankings, $predictionCount, $usersCount);
         return $this->render('stats/index.html.twig', [
             'globalRankings' => $globalRankings,
             'lastEventRankings' => $lastEventRankings,

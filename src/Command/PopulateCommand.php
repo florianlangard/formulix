@@ -46,6 +46,13 @@ class PopulateCommand extends Command
         $this->addArgument('round', InputArgument::REQUIRED, 'enter the round number of requested race');
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
@@ -74,7 +81,7 @@ class PopulateCommand extends Command
             $prediction->setUser($u);
             $pole = $this->driverRepository->findOneBy(['id' => rand($drivers[0]->getId(),$drivers[count($drivers)-1]->getId())]);
             $prediction->setPole($pole);
-            $prediction->setTime('1:'.rand(25, 35).'.'.random_int(000,999));
+            $prediction->setTime('1:'.rand(16, 26).'.'.random_int(0,9).random_int(0,9).random_int(0,9));
 
             $first = $this->driverRepository->findOneBy(['id' => rand($drivers[0]->getId(),$drivers[count($drivers)-1]->getId())]);
             $prediction->setFinishFirst($first);

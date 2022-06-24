@@ -22,7 +22,7 @@ class EventControllerTest extends WebTestCase {
     public function testEventsInEventsPage() {
         $client = static::createClient();
         $crawler = $client->request('GET', '/events');
-        $this->assertCount(20, $crawler->filter('div .event.card'));
+        $this->assertCount(21, $crawler->filter('div .event.card'));
     }
 
 }

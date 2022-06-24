@@ -68,7 +68,7 @@ class TwitchAuthenticator extends OAuth2Authenticator
                     $newUser->setTwitchId($twitchUser->getId());
                     $newUser->setEmail($twitchUser->getEmail());
                     $newUser->setPersonaname($twitchUser->getLogin());
-                    //dd($newUser);
+                    
                     $this->entityManager->persist($newUser);
                     $this->entityManager->flush();
                 }

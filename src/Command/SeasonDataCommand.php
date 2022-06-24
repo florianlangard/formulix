@@ -28,6 +28,13 @@ class SeasonDataCommand extends Command
             ->addArgument('year', InputArgument::REQUIRED, 'which season ?');
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);

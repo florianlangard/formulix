@@ -35,7 +35,7 @@ class UtilityControllerTest extends WebTestCase {
         $userRepository = static::getContainer()->get(UserRepository::class);
 
         // retrieve the test user
-        $testUser = $userRepository->findOneByEmail('user0@test.com');
+        $testUser = $userRepository->findOneByEmail('user1@test.com');
 
         // simulate $testUser being logged in
         $client->loginUser($testUser);
