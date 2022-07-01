@@ -70,7 +70,21 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
         }
 
         $events = [];
-        for($i = 1; $i <= 20; $i++) {
+        $pastEvent = new Event();
+        $pastEvent->setName('course n° 1');
+        $pastEvent->setDate(new DateTime('-1 day'));
+        $pastEvent->setQualifyingDate(new DateTime('-2 days'));
+        $pastEvent->setRound(1);
+        $pastEvent->setSeason('2022');
+        $pastEvent->setCircuitName('circuitName 1');
+        $pastEvent->setLocality('locality 1');
+        $pastEvent->setCountry('country 1');
+        $pastEvent->setSlug($this->slugger->slug($pastEvent->getName()));
+
+        $manager->persist($pastEvent);
+        $events[] = $pastEvent;
+
+        for($i = 2; $i <= 20; $i++) {
                 $event = new Event();
                 $event->setName('course n° '.$i);
                 $event->setDate(new DateTime('+'.$i.' days'));
