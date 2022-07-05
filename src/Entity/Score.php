@@ -53,6 +53,51 @@ class Score
      */
     private $raceScore;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $qualifyingWins;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $qualifyingSecond;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $qualifyingThird;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $raceWins;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $raceSecond;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $raceThird;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $eventWins;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $eventSecond;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $eventThird;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -126,6 +171,114 @@ class Score
     public function setRaceScore(?int $raceScore): self
     {
         $this->raceScore = $raceScore;
+
+        return $this;
+    }
+
+    public function getQualifyingWins(): ?int
+    {
+        return $this->qualifyingWins;
+    }
+
+    public function setQualifyingWins(?int $qualifyingWins): self
+    {
+        $this->qualifyingWins = $qualifyingWins;
+
+        return $this;
+    }
+
+    public function getQualifyingSecond(): ?int
+    {
+        return $this->qualifyingSecond;
+    }
+
+    public function setQualifyingSecond(?int $qualifyingSecond): self
+    {
+        $this->qualifyingSecond = $qualifyingSecond;
+
+        return $this;
+    }
+
+    public function getQualifyingThird(): ?int
+    {
+        return $this->qualifyingThird;
+    }
+
+    public function setQualifyingThird(?int $qualifyingThird): self
+    {
+        $this->qualifyingThird = $qualifyingThird;
+
+        return $this;
+    }
+
+    public function getRaceWins(): ?int
+    {
+        return $this->raceWins;
+    }
+
+    public function setRaceWins(?int $raceWins): self
+    {
+        $this->raceWins = $raceWins;
+
+        return $this;
+    }
+
+    public function getRaceSecond(): ?int
+    {
+        return $this->raceSecond;
+    }
+
+    public function setRaceSecond(?int $raceSecond): self
+    {
+        $this->raceSecond = $raceSecond;
+
+        return $this;
+    }
+
+    public function getRaceThird(): ?int
+    {
+        return $this->raceThird;
+    }
+
+    public function setRaceThird(?int $raceThird): self
+    {
+        $this->raceThird = $raceThird;
+
+        return $this;
+    }
+
+    public function getEventWins(): ?int
+    {
+        return $this->eventWins;
+    }
+
+    public function setEventWins(?int $eventWins): self
+    {
+        $this->eventWins = $eventWins;
+
+        return $this;
+    }
+
+    public function getEventSecond(): ?int
+    {
+        return $this->eventSecond;
+    }
+
+    public function setEventSecond(?int $eventSecond): self
+    {
+        $this->eventSecond = $eventSecond;
+
+        return $this;
+    }
+
+    public function getEventThird(): ?int
+    {
+        return $this->eventThird;
+    }
+
+    public function setEventThird(?int $eventThird): self
+    {
+        $this->eventThird = $eventThird;
 
         return $this;
     }
