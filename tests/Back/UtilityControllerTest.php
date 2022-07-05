@@ -45,4 +45,20 @@ class UtilityControllerTest extends WebTestCase {
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
+    public function testCalculateScore()
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+
+        // retrieve the test user
+        $testUser = $userRepository->findOneByEmail('admin@test.com');
+
+        // simulate $testUser being logged in
+        $client->loginUser($testUser);
+
+        // test e.g. the profile page
+        $client->request('GET', '/back/utility/calculate_scores');
+        $this->assertResponseRedirects('/back/utility');
+    }
+
 }

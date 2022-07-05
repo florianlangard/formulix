@@ -2,6 +2,7 @@
 
 namespace App\Tests\Front;
 
+use App\Form\PredictionFormType;
 use App\Repository\UserRepository;
 use App\Repository\EventRepository;
 use App\Repository\DriverRepository;
@@ -97,6 +98,39 @@ class PredictionControllerTest extends WebTestCase {
         $this->assertResponseIsSuccessful();
         // $this->assertSelectorTextContains('h1', 'Tableau');
     }
+
+    // public function testQualifyingPrediction()
+    // {
+    //     $client = static::createClient();
+    //     $userRepository = static::getContainer()->get(UserRepository::class);
+    //     $eventRepository = static::getContainer()->get(EventRepository::class);
+    //     $driverRepository = static::getContainer()->get(DriverRepository::class);
+    //     $predictionRepository = static::getContainer()->get(PredictionRepository::class);
+    //     $event = $eventRepository->findOneBy(['round' => 5, 'season' => 2022]);
+    //     $driver = $driverRepository->findOneBy(['fullname' => 'prénom1 nom1']);
+    //     // retrieve the test user
+    //     $testUser = $userRepository->findOneByEmail('admin@test.com');
+    //     // simulate $testUser being logged in
+    //     $client->loginUser($testUser);
+    //     $crawler = $client->request('GET', '/prediction/add/qualifying/'.$event->getSlug());
+    //     $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+    //     $this->assertSelectorTextContains('h1', 'Pronostics');
+
+    //     // $buttonCrawlerNode = $crawler->selectButton('Enregistrer');
+    //     // $form = $buttonCrawlerNode->form();
+
+    //     $client->submitForm('Enregistrer', [
+    //         'prediction_form[pole]' => $driver->getId(),
+    //         'prediction_form[min]' => '1',
+    //         'prediction_form[sec]' => '22',
+    //         'prediction_form[msec]' => '789'
+    //     ]);
+    //     $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+    //     $em = $client->getContainer()->get('doctrine.orm.entity_manager');
+    //     $prediction = $predictionRepository->findOneBy([], ['created_at' => 'DESC']);
+    //     $em->remove($prediction);
+    //     $em->flush();
+    // }
 
     public function testEditPrediction()
     {
