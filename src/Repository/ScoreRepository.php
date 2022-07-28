@@ -26,9 +26,10 @@ class ScoreRepository extends ServiceEntityRepository
     public function findTopTen()
     {
         return $this->createQueryBuilder('s')
-            // ->andWhere('s.exampleField = :val')
-            // ->setParameter('val', $value)
             ->orderBy('s.total', 'DESC')
+            ->addOrderBy('s.eventWins', 'DESC')
+            ->addOrderBy('s.eventSecond', 'DESC')
+            ->addOrderBy('s.eventThird', 'DESC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
