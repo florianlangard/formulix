@@ -2,6 +2,10 @@
 
 {% block title %}Formulix - Accueil
 {% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('congrats') }}
+{% endblock %}
 {% block header %}
 	<header class="header">
 		<div class="header-container">

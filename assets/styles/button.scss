@@ -8,6 +8,7 @@
     margin-right: 4px;
     color: white;
     font-size: 1.2em;
+
     &-submit {
         font-weight: bold;
         background-color: rgb(0, 120, 0);
@@ -15,12 +16,22 @@
     }
 
     &-submit:hover {
-        background-color: rgb(0, 120, 0);
-        color: white;
-        border: none;
+        // background-color: rgb(0, 120, 0);
+        // color: white;
+        // border: none;
         transition: .5s;
-        transform : scale(1.05);
-        
+        transform : scale(1.05);  
+    }
+
+    &-validate {
+        font-weight: bold;
+        background-color: rgb(20, 60, 160);
+        margin-bottom: 4px;
+    }
+
+    &-validate:hover {
+        transition: .5s;
+        transform : scale(1.05);  
     }
 
     &-disabled {
