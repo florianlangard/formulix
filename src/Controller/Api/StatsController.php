@@ -16,7 +16,13 @@ class StatsController extends AbstractController
      */
     public function getQualifyingGlobalRanking(ScoreRepository $scoreRepository): Response
     {
-        $scores = $scoreRepository->findBy([], ['qualifyingScore' => 'DESC']);
+        $scores = $scoreRepository->findBy([], 
+            [
+            'qualifyingScore' => 'DESC', 
+            'qualifyingWins' => 'DESC', 
+            'qualifyingSecond' => 'DESC', 
+            'qualifyingThird' => 'DESC'
+            ]);
         return $this->json($scores, Response::HTTP_OK, [], ['groups' => ['rankings', 'rankings_qualifying']]);
     }
 
@@ -26,7 +32,13 @@ class StatsController extends AbstractController
      */
     public function getRaceGlobalRanking(ScoreRepository $scoreRepository): Response
     {
-        $scores = $scoreRepository->findBy([], ['raceScore' => 'DESC']);
+        $scores = $scoreRepository->findBy([],
+        [
+            'raceScore' => 'DESC', 
+            'raceWins' => 'DESC', 
+            'raceSecond' => 'DESC', 
+            'raceThird' => 'DESC'
+        ]);
         return $this->json($scores, Response::HTTP_OK, [], ['groups' => ['rankings', 'rankings_race']]);
     }
 
@@ -36,7 +48,13 @@ class StatsController extends AbstractController
      */
     public function getGlobalRanking(ScoreRepository $scoreRepository): Response
     {
-        $scores = $scoreRepository->findBy([], ['total' => 'DESC']);
+        $scores = $scoreRepository->findBy([],
+        [
+            'total' => 'DESC', 
+            'eventWins' => 'DESC', 
+            'eventSecond' => 'DESC', 
+            'eventThird' => 'DESC'
+        ]);
         return $this->json($scores, Response::HTTP_OK, [], ['groups' => ['rankings', 'rankings_global']]);
     }
 }

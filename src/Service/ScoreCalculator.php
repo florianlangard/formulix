@@ -50,7 +50,7 @@ class ScoreCalculator
         // Get last Event and his Result
         $lastResult =  $this->resultRepository->findOneBy(['event' => $event]);
         $predictions = $this->predictionRepository->findBy(['event' => $event]);
-        if ($lastResult->getPole() === null) {
+        if ($lastResult === null) {
             return false;
         }
         // Logic to convert result time in the required format to compare
@@ -120,7 +120,7 @@ class ScoreCalculator
         // Get last Event and his Result
         $lastResult =  $this->resultRepository->findOneBy(['event' => $event]);
         $predictions = $this->predictionRepository->findBy(['event' => $event]);
-        if ($lastResult->getFinishedFirst() === null) {
+        if ($lastResult === null) {
             return false;
         }
         $first = $lastResult->getFinishedFirst();
