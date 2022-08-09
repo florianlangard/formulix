@@ -2,32 +2,37 @@ function greet()
 {
     //TODO : Call endpoint looking for toCongrat true or false
     //TODO : if true, open modal
-    const bodyContainer = document.querySelector('.body-container');
+    const toCongrat = true;
+    if (toCongrat) {
+        const bodyContainer = document.querySelector('.body-container');
 
-    let congratsModal = document.createElement('div');
-    congratsModal.className = 'congrats-modal';
+        let congratsModal = document.createElement('div');
+        congratsModal.className = 'congrats-modal';
 
-    let modalContainer = document.createElement('div');
-    modalContainer.className = 'congrats-modal-container';
-    congratsModal.appendChild(modalContainer);
+        let modalContainer = document.createElement('div');
+        modalContainer.className = 'congrats-modal-container';
+        congratsModal.appendChild(modalContainer);
 
-    let modalHeader = document.createElement('h3');
-    modalHeader.textContent = "GG!";
-    modalContainer.appendChild(modalHeader);
+        let trophy = document.createElement('img');
+        trophy.setAttribute('src', 'assets/trophy-solid.svg');
+        trophy.className = 'modal-trophy';
+        modalContainer.appendChild(trophy);
 
-    let modalContent = document.createElement('p');
-    modalContent.textContent = "texte de congratulation ici";
-    modalContainer.appendChild(modalContent);
+        let modalHeader = document.createElement('h3');
+        modalHeader.textContent = "GG!";
+        modalContainer.appendChild(modalHeader);
 
-    let buttonElement = document.createElement('button');
-    buttonElement.textContent = "Merci :)";
-    buttonElement.className = 'btn btn-validate';
-    modalContainer.appendChild(buttonElement);
+        let modalContent = document.createElement('p');
+        modalContent.textContent = "texte de congratulation ici";
+        modalContainer.appendChild(modalContent);
 
-    bodyContainer.appendChild(congratsModal);
+        let buttonElement = document.createElement('button');
+        buttonElement.textContent = "Merci :)";
+        buttonElement.className = 'btn btn-validate';
+        modalContainer.appendChild(buttonElement);
 
-    
-    
+        bodyContainer.appendChild(congratsModal);
+    }  
 }
 
 function closeModal()
