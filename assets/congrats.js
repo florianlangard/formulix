@@ -2,7 +2,9 @@ function greet()
 {
     //TODO : Call endpoint looking for toCongrat true or false
     //TODO : if true, open modal
+    const confetti = require('canvas-confetti');
     const toCongrat = true;
+
     if (toCongrat) {
         const bodyContainer = document.querySelector('.body-container');
 
@@ -32,6 +34,44 @@ function greet()
         modalContainer.appendChild(buttonElement);
 
         bodyContainer.appendChild(congratsModal);
+
+        let myCanvas = document.createElement('canvas');
+        modalContainer.appendChild(myCanvas);
+        var myConfetti = confetti.create(myCanvas, {
+            resize: true,
+            useWorker: true
+            });
+        // myConfetti({
+        // particleCount: 100,
+        // spread: 160
+        // });
+        let end = Date.now() + (2 * 1000);
+        let colors = ['#15151e', '#E10600'];
+        (function frame()
+        {
+            myConfetti({
+                particleCount: 2,
+                angle: 60,
+                spread: 65,
+                origin: { x: 0, y: 0.5 },
+                startVelocity: 40,
+                colors: colors
+            });
+            myConfetti({
+                particleCount: 2,
+                angle: 120,
+                spread: 65,
+                origin: { x: 1, y: 0.5 },
+                startVelocity: 40,
+                colors: colors
+            });
+            if (Date.now() < end) {
+                requestAnimationFrame(frame);
+            }
+        }());
+        setTimeout(() => {
+            modalContainer.removeChild(myCanvas);
+        }, 4 * 1000);
     }  
 }
 

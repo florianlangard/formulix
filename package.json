@@ -19,6 +19,7 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "canvas-confetti": "^1.5.1",
         "notyf": "^3.10.0"
     }
 }
