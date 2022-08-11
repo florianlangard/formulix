@@ -15,6 +15,11 @@ function greet()
         modalContainer.className = 'congrats-modal-container';
         congratsModal.appendChild(modalContainer);
 
+        let closeButton = document.createElement('img');
+        closeButton.setAttribute('src', 'assets/rectangle-xmark-solid.svg');
+        closeButton.className = 'modal-close';
+        modalContainer.appendChild(closeButton);
+
         let trophy = document.createElement('img');
         trophy.setAttribute('src', 'assets/trophy-solid.svg');
         trophy.className = 'modal-trophy';
@@ -79,6 +84,7 @@ function closeModal()
 {
     const modal = document.querySelector('.congrats-modal');
     const button = document.querySelector('.btn.btn-validate');
+    const cross = document.querySelector('.modal-close');
 
     window.onclick = function(event) {
         if (event.target == modal) {
@@ -86,6 +92,9 @@ function closeModal()
         }
     }
     button.onclick = function() {
+        modal.remove();
+    }
+    cross.onclick = function() {
         modal.remove();
     }
 
