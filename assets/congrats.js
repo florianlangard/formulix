@@ -3,7 +3,7 @@ function greet()
     //TODO : Call endpoint looking for toCongrat true or false
     //TODO : if true, open modal
     const confetti = require('canvas-confetti');
-    const toCongrat = true;
+    const toCongrat = false;
 
     if (toCongrat) {
         const bodyContainer = document.querySelector('.body-container');
