@@ -23,6 +23,7 @@ Encore
     .addEntry('app', './assets/app.js')
     .addEntry('notyf', './assets/notyf.js')
     .addEntry('rankings', './assets/rankings.js')
+    .addEntry('congrats', './assets/congrats.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

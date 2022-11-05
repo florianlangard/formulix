@@ -17,6 +17,7 @@ import './styles/rankings.scss';
 import './styles/button.scss';
 import './styles/backoffice.scss';
 import './styles/stats.scss';
+import './styles/modal.scss';
 import '../node_modules/flag-icons/css/flag-icons.css';
 
 // start the Stimulus application
